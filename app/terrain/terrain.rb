@@ -138,11 +138,11 @@ class Component
     end
     
     def perlin()
-        # coming soon
+        
     end
     
     def simplex()
-        # coming soon
+        
     end
     
     def mag()
