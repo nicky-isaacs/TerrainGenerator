@@ -18,9 +18,9 @@ end
 #  add: inputs{"x", "y", "z", "w", "a", "b", "c", "d"} => outputs{"x", "y", "z", "w"}
 #  sub: inputs{"x", "y", "z", "w", "a", "b", "c", "d"} => outputs{"x", "y", "z", "w"}
 #  exp: inputs{"x", "y", "z", "w", "e"} => outputs{"x", "y", "z", "w"}
-#  root: inputs{"x", "y", "z", "w", "r"} => outputs{"x", "y", "z", "w"}
+#  sqrt: inputs{"x", "y", "z", "w"} => outputs{"x", "y", "z", "w"}
 #  log: inputs{"b", "x", "y", "z", "w"} => outputs{"x", "y", "z", "w"}
-#  random: inputs{"l", "u", "s"} => outputs{"x", "y", "z", "w"}
+#  random: inputs{"lo", "hi", "sd"} => outputs{"x", "y", "z", "w"}
 #  perlin: inputs{"x", "y", "z", "w"} => outputs{"v"}
 #  simplex: inputs{"x", "y", "z", "w"} => outputs{"v"}
 #  mag: inputs{"x", "y", "z", "w"} => outputs{"m"}
@@ -31,14 +31,17 @@ class Component
     attr_accessor :lock
     
     def new()
+        @precalc = false
         @output = nil
+        @input = nil
         @lock = false
         @type = "value"
         @name = "noname"
     end
 
     def output
-        return @output
+        if @output != nil or @lock then return @output end
+        return self.send(@type)
     end
     
     def output=(val)
@@ -49,66 +52,129 @@ class Component
             end
         end
     end
+    
+    def invalue(name)
+        source, sname = @input[name]
+        return source.output[sname]
+    end
 
 # Component getvalue methods
     def pipe()
-    
+        @input.each{ |name, source|
+            @output = Hash.new()
+            @output[name] = invalue(name)
+        }
+        return @output
     end
 
     def value()
-    
+        @lock = true
+        return @output
     end
     
     def mult()
-    
+        @output["x"] = invalue("x") * invalue("b")
+        @output["y"] = invalue("y") * invalue("b")
+        @output["z"] = invalue("z") * invalue("b")
+        @output["w"] = invalue("w") * invalue("b")
+        return @output
     end
     
     def div()
-    
+        @output["x"] = invalue("x") / invalue("b")
+        @output["y"] = invalue("y") / invalue("b")
+        @output["z"] = invalue("z") / invalue("b")
+        @output["w"] = invalue("w") / invalue("b")
+        return @output
     end
     
     def add()
-    
+        @output["x"] = invalue("x") + invalue("a")
+        @output["y"] = invalue("y") + invalue("b")
+        @output["z"] = invalue("z") + invalue("c")
+        @output["w"] = invalue("w") + invalue("d")
+        return @output
     end
     
     def sub()
-    
+        @output["x"] = invalue("x") - invalue("a")
+        @output["y"] = invalue("y") - invalue("b")
+        @output["z"] = invalue("z") - invalue("c")
+        @output["w"] = invalue("w") - invalue("d")
+        return @output
     end
     
     def exp()
-    
+        @output["x"] = invalue("x") ** invalue("e")
+        @output["y"] = invalue("y") ** invalue("e")
+        @output["z"] = invalue("z") ** invalue("e")
+        @output["w"] = invalue("w") ** invalue("e")
+        return @output
     end
     
-    def root()
-    
+    def sqrt()
+        @output["x"] = Math.sqrt(invalue("x"))
+        @output["y"] = Math.sqrt(invalue("y"))
+        @output["z"] = Math.sqrt(invalue("z"))
+        @output["w"] = Math.sqrt(invalue("w"))
+        return @output
     end
     
     def log()
-    
+        @output["x"] = Math.log(invalue("x"), invalue("b"))
+        @output["y"] = Math.log(invalue("y"), invalue("b"))
+        @output["z"] = Math.log(invalue("z"), invalue("b"))
+        @output["w"] = Math.log(invalue("w"), invalue("b"))
+        return @output
     end
     
     def random()
-    
+        r = Random.new(invalue("sd") + 1233)
+        @output["x"] = invalue("lo") + r.rand(invalue("hi"))
+        @output["y"] = invalue("lo") + r.rand(invalue("hi"))
+        @output["z"] = invalue("lo") + r.rand(invalue("hi"))
+        @output["w"] = invalue("lo") + r.rand(invalue("hi"))
+        return @output
     end
     
     def perlin()
-    
+        # coming soon
     end
     
     def simplex()
-    
+        # coming soon
     end
     
     def mag()
-    
+        @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+                                 invalue("y") * invalue("y") +
+                                 invalue("z") * invalue("z") +
+                                 invalue("w") * invalue("w"))
+        return @output
     end
     
     def norm()
-    
+        @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+                                 invalue("y") * invalue("y") +
+                                 invalue("z") * invalue("z") +
+                                 invalue("w") * invalue("w"))
+        @output["x"] = invalue("x") / @output["m"]
+        @output["y"] = invalue("x") / @output["m"]
+        @output["z"] = invalue("x") / @output["m"]
+        @output["w"] = invalue("x") / @output["m"]
+        return @output
     end
     
     def resize()
-    
+        @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+                                 invalue("y") * invalue("y") +
+                                 invalue("z") * invalue("z") +
+                                 invalue("w") * invalue("w"))
+        @output["x"] = invalue("x") * invalue("m") / @output["m"]
+        @output["y"] = invalue("x") * invalue("m") / @output["m"]
+        @output["z"] = invalue("x") * invalue("m") / @output["m"]
+        @output["w"] = invalue("x") * invalue("m") / @output["m"]
+        return @output
     end
 end
 
