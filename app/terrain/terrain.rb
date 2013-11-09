@@ -45,6 +45,7 @@ class Component
     end
     
     def output=(val)
+        if val == nil then return end
         if not @lock then
             @output = val
             if @type == "value" then
@@ -56,6 +57,10 @@ class Component
     def invalue(name)
         source, sname = @input[name]
         return source.output[sname]
+    end
+    
+    def reset()
+        if @type != "value" then @output = nil end
     end
 
 # Component getvalue methods
