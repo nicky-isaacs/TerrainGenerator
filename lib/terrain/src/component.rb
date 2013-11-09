@@ -18,12 +18,10 @@
 
 # generates from this root component, with specified dimensions and resolution
 
-
-
 class Component
   attr_accessor :lock
 
-  def new()
+  def initialize()
     @precalc = false
     @output = nil
     @input = nil
