@@ -23,7 +23,7 @@
 class Component
   attr_accessor :lock
 
-  def new()
+  def initialize()
     @precalc = false
     @output = nil
     @input = nil
