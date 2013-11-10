@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-	before_filter :authenticate_user!
+	#before_filter :authenticate_user!
 
 	# user_signed_in?
 
