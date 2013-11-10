@@ -25,24 +25,44 @@ class Component
 	class << self
 	
 		def deserialize(json_string)
-			args = JSON.parse(json_string)
+			args = JSON.parse(json_string).symbolize_keys
+			inflated_outputs=[]
+			inflated_inputs=[]
+
+			args[:outputs].each do |o|
+				inflated_outputs << deserialize o
+			end
+
+			args[:inputs].each do |i|
+				inflated_inputs << deserialize i
+			end
+
+			args[:inputs] = inflated_inputs
+			args[:outputs] = inflated_outputs
+
 			self.new(args)
 		end
 
 	end
 
-  def initialize()
-    @output = nil
-    @input = nil
-    @lock = false
-    @type = "value"
-    @name = "noname"
+  def initialize( params={} )
+    @outputs = params[:outputs]
+    @inputs = params[:inputs]
+    @lock = true unless( @lock = params[:lock] )
+    @type = params[:type]
+    @name = params[:name]
   end
 
 	def to_json
+		json_outputs = []
+		json_inputs = []
+
+		inputs.each{ |i| json_inputs << i.to_json }
+		outputs.each{ |o| json_outputs << o.to_json }
+
 		{
-			:inputs => inputs,
-			:outputs => outputs,
+			:inputs => json_inputs,
+			:outputs => json_outputs,
 			:lock => lock,
 			:type => type
 		}.to_json
