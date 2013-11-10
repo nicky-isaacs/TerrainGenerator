@@ -1,4 +1,6 @@
 TerainGeneration::Application.routes.draw do
+  resources :generators
+
   devise_for :users
   
 	root 'generators#home'
