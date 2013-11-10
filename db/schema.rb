@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131110000605) do
+ActiveRecord::Schema.define(version: 20131110175130) do
 
   create_table "components", force: true do |t|
     t.boolean  "lock"
-ActiveRecord::Schema.define(version: 20131110053751) do
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "generators", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email"

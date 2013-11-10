@@ -3,7 +3,7 @@ TerainGeneration::Application.routes.draw do
 
   devise_for :users
   
-	root 'generators#home'
+	root 'generators#index'
 
 	get '/user/:id' => 'users#show'
 

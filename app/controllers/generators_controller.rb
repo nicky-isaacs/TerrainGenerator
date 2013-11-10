@@ -1,5 +1,6 @@
 class GeneratorsController < ApplicationController
   before_action :set_generator, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /generators
   # GET /generators.json
