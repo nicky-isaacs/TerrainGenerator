@@ -53,3 +53,5 @@ end
 # gem 'debugger', group: [:development, :test]
 
 # Custom additions
+gem 'devise'
+
