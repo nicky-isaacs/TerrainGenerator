@@ -50,8 +50,8 @@ class Component
   end
 
   def invalue(name)
-    source, sname = @input[name]
-    return source.output[sname]
+    src = @input[name]
+    return src.first.output[src[-1]]
   end
 
   def reset()
