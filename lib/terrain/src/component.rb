@@ -1,3 +1,4 @@
+require 'json'
 
 #types..
 #  pipe: forwards inputs by name
@@ -19,16 +20,53 @@
 # generates from this root component, with specified dimensions and resolution
 
 class Component
-  attr_accessor :lock
+  attr_accessor :lock, :inputs
+	
+	class << self
+	
+		def deserialize(json_string)
+			args = JSON.parse(json_string).symbolize_keys
+			inflated_outputs=[]
+			inflated_inputs=[]
 
-  def initialize()
-    @precalc = false
-    @output = nil
-    @input = nil
-    @lock = false
-    @type = "value"
-    @name = "noname"
+			args[:outputs].each do |o|
+				inflated_outputs << deserialize o
+			end
+
+			args[:inputs].each do |i|
+				inflated_inputs << deserialize i
+			end
+
+			args[:inputs] = inflated_inputs
+			args[:outputs] = inflated_outputs
+
+			self.new(args)
+		end
+
+	end
+
+  def initialize( params={} )
+    @outputs = params[:outputs]
+    @inputs = params[:inputs]
+    @lock = true unless( @lock = params[:lock] )
+    @type = params[:type]
+    @name = params[:name]
   end
+
+	def to_json
+		json_outputs = []
+		json_inputs = []
+
+		inputs.each{ |i| json_inputs << i.to_json }
+		outputs.each{ |o| json_outputs << o.to_json }
+
+		{
+			:inputs => json_inputs,
+			:outputs => json_outputs,
+			:lock => lock,
+			:type => type
+		}.to_json
+	end
 
   def generate(dim, res)
 

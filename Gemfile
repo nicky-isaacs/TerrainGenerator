@@ -11,7 +11,7 @@ group :production do
 end
 
 group :development, :test do
-  gem 'sqlite3'
+  gem 'mysql2'
 end
 
 # Use SCSS for stylesheets
@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 1.2'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+  gem 'sdoc', :require => false
 end
 
 # Use ActiveModel has_secure_password
@@ -51,3 +51,9 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+# Custom additions
+gem 'devise'
+gem "therubyracer"
+gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "twitter-bootstrap-rails"
