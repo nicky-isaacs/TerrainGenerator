@@ -11,10 +11,12 @@ class ComponentTypesLookup
 
 		def lookup_table
 			{
-				'mult' => [ %w(x y z w b), %w(x, y, z, w) ], # creates array of ['x', 'y', 'z', 'w', 'b']				
-				'div' => [%w(), %w()],
+				'mult' => [ %w(x y z w b), %w(x y z w) ],
+				'div' => [%w(x y z w b), %w(x y z w)],
+				'add' => [%w(x y z w a b c d), %w(x y z w)]
+				'sub' => [%w(x y z w a b c d), %w(x y z w)]
 				'value' => [ [], ['v'] ],
-				'exp' => [ %w(x y z w e), %w(x y z w)]
+				'exp' => [ %w(x y z w e), %w(x y z w)],
 			}
 		end
 
