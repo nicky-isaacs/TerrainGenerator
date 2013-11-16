@@ -1,3 +1,7 @@
+class NotImplimentedError < StandardError
+
+end
+
 class GeneratorsController < ApplicationController
   before_action :set_generator, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
@@ -62,6 +66,15 @@ class GeneratorsController < ApplicationController
     end
   end
 
+  def preview
+    if Rails.env.development? && params[:id].nil?
+      @obj_path = "/test/test.obj"
+      flash[:alert] = "Displaying the test object"
+    elsif !@obj_path
+      flash[:alert] = "Could not locate file to preview"
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_generator
@@ -71,5 +84,9 @@ class GeneratorsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def generator_params
       params.require(:generator).permit(:name)
+    end
+
+    def object_path
+      raise NotImplimentedError
     end
 end

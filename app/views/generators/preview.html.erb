@@ -1,0 +1,8 @@
+<%= javascript_include_tag 'three.min.js' %>
+
+<div class="content preview">
+  <p>Here is the script</p>
+  <%= javascript_tag do %>
+    var obj_path = "<%= @obj_path %>";
+  <% end %>
+</div>
