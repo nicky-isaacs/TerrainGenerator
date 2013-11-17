@@ -73,6 +73,7 @@ class GeneratorsController < ApplicationController
     elsif !@obj_path
       flash[:alert] = "Could not locate file to preview"
     end
+    #render :layout => false
   end
 
   private

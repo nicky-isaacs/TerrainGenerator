@@ -1,8 +1,20 @@
-<%= javascript_include_tag 'three.min.js' %>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<%= javascript_include_tag 'threeJs/three.min.js' %>
+<%= javascript_include_tag 'threeJs/OBJLoader' %>
+<%= javascript_include_tag 'threeJs/OBJMTLLoader' %>
+<%= javascript_include_tag 'threeJs/MTLLoader' %>
+<%= javascript_include_tag 'threeJs/Detector' %>
+<%= javascript_include_tag 'threeJs/stats.min.js' %>
+<%= javascript_include_tag 'generators' %>
 
-<div class="content preview">
-  <p>Here is the script</p>
-  <%= javascript_tag do %>
-    var obj_path = "<%= @obj_path %>";
-  <% end %>
-</div>
+
+<!--<script src="js/loaders/OBJLoader.js"></script>-->
+
+<!--<script src="js/Detector.js"></script>-->
+<!--<script src="js/libs/stats.min.js"></script>-->
+
+
+<%= javascript_tag do %>
+  var obj_path = "<%= @obj_path %>";
+<% end %>
