@@ -27,13 +27,42 @@ function init() {
     scene.add( ambient );
 
     var directionalLight = new THREE.DirectionalLight( 0xffeedd );
-    directionalLight.position.set( 0, 0, 1 ).normalize();
+    directionalLight.position.set( 0, 0, 1 );
     scene.add( directionalLight );
+
+    // texture
+
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function ( item, loaded, total ) {
+
+        console.log( item, loaded, total );
+
+    };
+
+    var texture = new THREE.Texture();
+
+    var loader = new THREE.ImageLoader( manager );
+    loader.load( '/textures/ash_uvgrid01.jpg', function ( image ) {
+
+        texture.image = image;
+        texture.needsUpdate = true;
+
+    } );
 
     // model
 
-    var loader = new THREE.ObjectLoader();
+    var loader = new THREE.OBJLoader( manager );
     loader.load( getObjPath(), function ( object ) {
+
+        object.traverse( function ( child ) {
+
+            if ( child instanceof THREE.Mesh ) {
+
+                child.material.map = texture;
+
+            }
+
+        } );
 
         object.position.y = - 80;
         scene.add( object );
