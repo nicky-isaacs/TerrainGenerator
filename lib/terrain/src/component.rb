@@ -1,7 +1,7 @@
 require 'json'
 
-#types..
-#  pipe: forwards inputs by name
+#types...
+#  result: forwards a single value "z"
 #  value: outputs constant value by name "v"
 #  mult: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
 #  div: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
@@ -20,7 +20,7 @@ require 'json'
 # generates from this root component, with specified dimensions and resolution
 
 class Component
-  attr_accessor :lock, :inputs
+  attr_accessor :inputs
 	
 	class << self
 	
@@ -51,6 +51,11 @@ class Component
     @lock = true unless( @lock = params[:lock] )
     @type = params[:type]
     @name = params[:name]
+    
+    if @type == "value" then
+        @output
+        @lock = true
+    end
   end
 
 	def to_json
@@ -69,18 +74,18 @@ class Component
 	end
 
   def generate(dim, res)
-
+    return self.output["z"]
   end
 
   def output
-    if @output != nil or @lock then return @output end
+    if @outputs != nil or @lock then return @outputs end
     return self.send(@type)
   end
 
   def output=(val)
     if val == nil then return end
     if not @lock then
-      @output = val
+      @outputs = val
       if @type == "value" then
         @lock = true
       end
@@ -88,91 +93,91 @@ class Component
   end
 
   def invalue(name)
-    src = @input[name]
+    src = @inputs[name]
     return src.first.output[src[-1]]
   end
 
   def reset()
-    if @type != "value" then @output = nil end
+    if @type != "value" then @outputs = nil end
   end
 
 # Component getvalue methods
   def pipe()
-    @input.each{ |name, source|
-      @output = Hash.new()
-      @output[name] = invalue(name)
+    @inputs.each{ |name, source|
+      @outputs = Hash.new()
+      @outputs[name] = invalue(name)
     }
-    return @output
+    return @outputs
   end
 
   def value()
     @lock = true
-    return @output
+    return @outputs
   end
 
   def mult()
-    @output["x"] = invalue("x") * invalue("b")
-    @output["y"] = invalue("y") * invalue("b")
-    @output["z"] = invalue("z") * invalue("b")
-    @output["w"] = invalue("w") * invalue("b")
-    return @output
+    @outputs["x"] = invalue("x") * invalue("b")
+    @outputs["y"] = invalue("y") * invalue("b")
+    @outputs["z"] = invalue("z") * invalue("b")
+    @outputs["w"] = invalue("w") * invalue("b")
+    return @outputs
   end
 
   def div()
-    @output["x"] = invalue("x") / invalue("b")
-    @output["y"] = invalue("y") / invalue("b")
-    @output["z"] = invalue("z") / invalue("b")
-    @output["w"] = invalue("w") / invalue("b")
-    return @output
+    @outputs["x"] = invalue("x") / invalue("b")
+    @outputs["y"] = invalue("y") / invalue("b")
+    @outputs["z"] = invalue("z") / invalue("b")
+    @outputs["w"] = invalue("w") / invalue("b")
+    return @outputs
   end
 
   def add()
-    @output["x"] = invalue("x") + invalue("a")
-    @output["y"] = invalue("y") + invalue("b")
-    @output["z"] = invalue("z") + invalue("c")
-    @output["w"] = invalue("w") + invalue("d")
-    return @output
+    @outputs["x"] = invalue("x") + invalue("a")
+    @outputs["y"] = invalue("y") + invalue("b")
+    @outputs["z"] = invalue("z") + invalue("c")
+    @outputs["w"] = invalue("w") + invalue("d")
+    return @outputs
   end
 
   def sub()
-    @output["x"] = invalue("x") - invalue("a")
-    @output["y"] = invalue("y") - invalue("b")
-    @output["z"] = invalue("z") - invalue("c")
-    @output["w"] = invalue("w") - invalue("d")
-    return @output
+    @outputs["x"] = invalue("x") - invalue("a")
+    @outputs["y"] = invalue("y") - invalue("b")
+    @outputs["z"] = invalue("z") - invalue("c")
+    @outputs["w"] = invalue("w") - invalue("d")
+    return @outputs
   end
 
   def exp()
-    @output["x"] = invalue("x") ** invalue("e")
-    @output["y"] = invalue("y") ** invalue("e")
-    @output["z"] = invalue("z") ** invalue("e")
-    @output["w"] = invalue("w") ** invalue("e")
-    return @output
+    @outputs["x"] = invalue("x") ** invalue("e")
+    @outputs["y"] = invalue("y") ** invalue("e")
+    @outputs["z"] = invalue("z") ** invalue("e")
+    @outputs["w"] = invalue("w") ** invalue("e")
+    return @outputs
   end
 
   def sqrt()
-    @output["x"] = Math.sqrt(invalue("x"))
-    @output["y"] = Math.sqrt(invalue("y"))
-    @output["z"] = Math.sqrt(invalue("z"))
-    @output["w"] = Math.sqrt(invalue("w"))
-    return @output
+    @outputs["x"] = Math.sqrt(invalue("x"))
+    @outputs["y"] = Math.sqrt(invalue("y"))
+    @outputs["z"] = Math.sqrt(invalue("z"))
+    @outputs["w"] = Math.sqrt(invalue("w"))
+    return @outputs
   end
 
   def log()
-    @output["x"] = Math.log(invalue("x"), invalue("b"))
-    @output["y"] = Math.log(invalue("y"), invalue("b"))
-    @output["z"] = Math.log(invalue("z"), invalue("b"))
-    @output["w"] = Math.log(invalue("w"), invalue("b"))
-    return @output
+    @outputs["x"] = Math.log(invalue("x"), invalue("b"))
+    @outputs["y"] = Math.log(invalue("y"), invalue("b"))
+    @outputs["z"] = Math.log(invalue("z"), invalue("b"))
+    @outputs["w"] = Math.log(invalue("w"), invalue("b"))
+    return @outputs
   end
 
   def random()
     r = Random.new(invalue("sd") + 1233)
-    @output["x"] = invalue("lo") + r.rand(invalue("hi"))
-    @output["y"] = invalue("lo") + r.rand(invalue("hi"))
-    @output["z"] = invalue("lo") + r.rand(invalue("hi"))
-    @output["w"] = invalue("lo") + r.rand(invalue("hi"))
-    return @output
+    @outputs["x"] = invalue("lo") + r.rand(invalue("hi"))
+    @outputs["y"] = invalue("lo") + r.rand(invalue("hi"))
+    @outputs["z"] = invalue("lo") + r.rand(invalue("hi"))
+    @outputs["w"] = invalue("lo") + r.rand(invalue("hi"))
+    return @outputs
   end
 
   def perlin()
@@ -184,34 +189,34 @@ class Component
   end
 
   def mag()
-    @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+    @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
                                  invalue("y") * invalue("y") +
                                  invalue("z") * invalue("z") +
                                  invalue("w") * invalue("w"))
-    return @output
+    return @outputs
   end
 
   def norm()
-    @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+    @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
                                  invalue("y") * invalue("y") +
                                  invalue("z") * invalue("z") +
                                  invalue("w") * invalue("w"))
-    @output["x"] = invalue("x") / @output["m"]
-    @output["y"] = invalue("x") / @output["m"]
-    @output["z"] = invalue("x") / @output["m"]
-    @output["w"] = invalue("x") / @output["m"]
-    return @output
+    @outputs["x"] = invalue("x") / @outputs["m"]
+    @outputs["y"] = invalue("x") / @outputs["m"]
+    @outputs["z"] = invalue("x") / @outputs["m"]
+    @outputs["w"] = invalue("x") / @outputs["m"]
+    return @outputs
   end
 
   def resize()
-    @output["m"] = Math.sqrt(invalue("x") * invalue("x") +
+    @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
                                  invalue("y") * invalue("y") +
                                  invalue("z") * invalue("z") +
                                  invalue("w") * invalue("w"))
-    @output["x"] = invalue("x") * invalue("m") / @output["m"]
-    @output["y"] = invalue("x") * invalue("m") / @output["m"]
-    @output["z"] = invalue("x") * invalue("m") / @output["m"]
-    @output["w"] = invalue("x") * invalue("m") / @output["m"]
-    return @output
+    @outputs["x"] = invalue("x") * invalue("m") / @outputs["m"]
+    @outputs["y"] = invalue("x") * invalue("m") / @outputs["m"]
+    @outputs["z"] = invalue("x") * invalue("m") / @outputs["m"]
+    @outputs["w"] = invalue("x") * invalue("m") / @outputs["m"]
+    return @outputs
   end
 end
