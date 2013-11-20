@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+
+<title>class Component - RDoc Documentation</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="class">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/models/component.rb
+    <li>lib/terrain/src/component.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActiveRecord::Base
+  
+</nav>
+
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-c-deserialize">::deserialize</a>
+    
+    <li><a href="#method-c-new">::new</a>
+    
+    <li><a href="#method-i-add">#add</a>
+    
+    <li><a href="#method-i-div">#div</a>
+    
+    <li><a href="#method-i-exp">#exp</a>
+    
+    <li><a href="#method-i-generate">#generate</a>
+    
+    <li><a href="#method-i-invalue">#invalue</a>
+    
+    <li><a href="#method-i-log">#log</a>
+    
+    <li><a href="#method-i-mag">#mag</a>
+    
+    <li><a href="#method-i-mult">#mult</a>
+    
+    <li><a href="#method-i-norm">#norm</a>
+    
+    <li><a href="#method-i-output">#output</a>
+    
+    <li><a href="#method-i-output-3D">#output=</a>
+    
+    <li><a href="#method-i-perlin">#perlin</a>
+    
+    <li><a href="#method-i-pipe">#pipe</a>
+    
+    <li><a href="#method-i-random">#random</a>
+    
+    <li><a href="#method-i-reset">#reset</a>
+    
+    <li><a href="#method-i-resize">#resize</a>
+    
+    <li><a href="#method-i-simplex">#simplex</a>
+    
+    <li><a href="#method-i-sqrt">#sqrt</a>
+    
+    <li><a href="#method-i-sub">#sub</a>
+    
+    <li><a href="#method-i-to_json">#to_json</a>
+    
+    <li><a href="#method-i-value">#value</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./Gemfile.html">Gemfile</a>
+  
+    <li class="file"><a href="./README_rdoc.html">README</a>
+  
+    <li class="file"><a href="./Rakefile.html">Rakefile</a>
+  
+    <li class="file"><a href="./public/robots_txt.html">robots</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./ActiveSupport.html">ActiveSupport</a>
+  
+    <li><a href="./ActiveSupport/TestCase.html">ActiveSupport::TestCase</a>
+  
+    <li><a href="./TerainGeneration.html">TerainGeneration</a>
+  
+    <li><a href="./TerainGeneration/Application.html">TerainGeneration::Application</a>
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./Component.html">Component</a>
+  
+    <li><a href="./ComponentTest.html">ComponentTest</a>
+  
+    <li><a href="./ComponentTypesLookup.html">ComponentTypesLookup</a>
+  
+    <li><a href="./CreateComponents.html">CreateComponents</a>
+  
+    <li><a href="./CreateGenerators.html">CreateGenerators</a>
+  
+    <li><a href="./DeviseCreateUsers.html">DeviseCreateUsers</a>
+  
+    <li><a href="./Generator.html">Generator</a>
+  
+    <li><a href="./GeneratorTest.html">GeneratorTest</a>
+  
+    <li><a href="./GeneratorsController.html">GeneratorsController</a>
+  
+    <li><a href="./GeneratorsControllerTest.html">GeneratorsControllerTest</a>
+  
+    <li><a href="./GeneratorsHelper.html">GeneratorsHelper</a>
+  
+    <li><a href="./GeneratorsHelperTest.html">GeneratorsHelperTest</a>
+  
+    <li><a href="./HeightMap.html">HeightMap</a>
+  
+    <li><a href="./NotImplimentedError.html">NotImplimentedError</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserTest.html">UserTest</a>
+  
+    <li><a href="./UsersController.html">UsersController</a>
+  
+    <li><a href="./UsersControllerTest.html">UsersControllerTest</a>
+  
+    <li><a href="./UsersHelper.html">UsersHelper</a>
+  
+    <li><a href="./UsersHelperTest.html">UsersHelperTest</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="class">class Component</h1>
+
+  <div id="description" class="description">
+    
+<p>generates from this root component, with specified dimensions and
+resolution</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <!-- Attributes -->
+    <section id="attribute-method-details" class="method-section section">
+      <h3 class="section-header">Attributes</h3>
+
+      
+      <div id="attribute-i-inputs" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">inputs</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section><!-- attribute-method-details -->
+    
+
+    <!-- Methods -->
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Class Methods</h3>
+
+    
+      <div id="method-c-deserialize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">deserialize</span><span
+            class="method-args">(json_string)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="deserialize-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">deserialize</span>(<span class="ruby-identifier">json_string</span>)
+        <span class="ruby-identifier">args</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">json_string</span>).<span class="ruby-identifier">symbolize_keys</span>
+        <span class="ruby-identifier">inflated_outputs</span>=[]
+        <span class="ruby-identifier">inflated_inputs</span>=[]
+
+        <span class="ruby-identifier">args</span>[<span class="ruby-value">:outputs</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">inflated_outputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">deserialize</span> <span class="ruby-identifier">o</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">args</span>[<span class="ruby-value">:inputs</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">inflated_inputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">deserialize</span> <span class="ruby-identifier">i</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">args</span>[<span class="ruby-value">:inputs</span>] = <span class="ruby-identifier">inflated_inputs</span>
+        <span class="ruby-identifier">args</span>[<span class="ruby-value">:outputs</span>] = <span class="ruby-identifier">inflated_outputs</span>
+
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- deserialize-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- deserialize-method -->
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(params={})</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/models/component.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">params</span>={})
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:output</span>]
+                <span class="ruby-ivar">@output</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:output</span>]
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-ivar">@output</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-ivar">@input</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:input</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- new-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- new-method -->
+
+    
+    </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;a&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;c&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;d&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- add-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- add-method -->
+
+    
+      <div id="method-i-div" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">div</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="div-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 126</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">div</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- div-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- div-method -->
+
+    
+      <div id="method-i-exp" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">exp</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="exp-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 150</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">exp</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">**</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;e&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">**</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;e&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">**</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;e&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) <span class="ruby-operator">**</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;e&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- exp-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- exp-method -->
+
+    
+      <div id="method-i-generate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate</span><span
+            class="method-args">(dim, res)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate</span>(<span class="ruby-identifier">dim</span>, <span class="ruby-identifier">res</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">output</span>[<span class="ruby-string">&quot;z&quot;</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- generate-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- generate-method -->
+
+    
+      <div id="method-i-invalue" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">invalue</span><span
+            class="method-args">(name)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="invalue-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 95</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">src</span> = <span class="ruby-ivar">@inputs</span>[<span class="ruby-identifier">name</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">src</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">output</span>[<span class="ruby-identifier">src</span>[<span class="ruby-value">-1</span>]]
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- invalue-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- invalue-method -->
+
+    
+      <div id="method-i-log" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">log</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="log-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 166</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">log</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>), <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>), <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>), <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">log</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>), <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>))
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- log-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- log-method -->
+
+    
+      <div id="method-i-mag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">mag</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="mag-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 191</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mag</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>))
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- mag-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- mag-method -->
+
+    
+      <div id="method-i-mult" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">mult</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="mult-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mult</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- mult-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- mult-method -->
+
+    
+      <div id="method-i-norm" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">norm</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="norm-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 199</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">norm</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- norm-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- norm-method -->
+
+    
+      <div id="method-i-output" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="output-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">output</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@outputs</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@lock</span> <span class="ruby-keyword">then</span> <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span> <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-ivar">@type</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- output-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- output-method -->
+
+    
+      <div id="method-i-output-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">output=</span><span
+            class="method-args">(val)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="output-3D-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">output=</span>(<span class="ruby-identifier">val</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">then</span> <span class="ruby-keyword">return</span> <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-ivar">@lock</span> <span class="ruby-keyword">then</span>
+    <span class="ruby-ivar">@outputs</span> = <span class="ruby-identifier">val</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;value&quot;</span> <span class="ruby-keyword">then</span>
+      <span class="ruby-ivar">@lock</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- output-3D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- output-3D-method -->
+
+    
+      <div id="method-i-perlin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">perlin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="perlin-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">perlin</span>()
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- perlin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- perlin-method -->
+
+    
+      <div id="method-i-pipe" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pipe</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Component.html">Component</a> getvalue methods</p>
+          
+
+          
+          <div class="method-source-code" id="pipe-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pipe</span>()
+  <span class="ruby-ivar">@inputs</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@outputs</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>()
+    <span class="ruby-ivar">@outputs</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-identifier">name</span>)
+  }
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- pipe-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- pipe-method -->
+
+    
+      <div id="method-i-random" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">random</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="random-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">random</span>()
+  <span class="ruby-identifier">r</span> = <span class="ruby-constant">Random</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;sd&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-value">1233</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;lo&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;hi&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;lo&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;hi&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;lo&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;hi&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;lo&quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">rand</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;hi&quot;</span>))
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- random-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- random-method -->
+
+    
+      <div id="method-i-reset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reset</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reset-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span>()
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@type</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;value&quot;</span> <span class="ruby-keyword">then</span> <span class="ruby-ivar">@outputs</span> = <span class="ruby-keyword">nil</span> <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reset-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reset-method -->
+
+    
+      <div id="method-i-resize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resize</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="resize-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 211</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">resize</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">+</span>
+                               <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;m&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;m&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;m&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) * <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;m&quot;</span>) <span class="ruby-operator">/</span> <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;m&quot;</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- resize-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- resize-method -->
+
+    
+      <div id="method-i-simplex" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">simplex</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="simplex-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">simplex</span>()
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- simplex-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- simplex-method -->
+
+    
+      <div id="method-i-sqrt" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sqrt</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sqrt-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sqrt</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>))
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-constant">Math</span>.<span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>))
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- sqrt-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- sqrt-method -->
+
+    
+      <div id="method-i-sub" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sub</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sub-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 142</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sub</span>()
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;x&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;x&quot;</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;a&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;y&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;y&quot;</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;b&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;z&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;z&quot;</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;c&quot;</span>)
+  <span class="ruby-ivar">@outputs</span>[<span class="ruby-string">&quot;w&quot;</span>] = <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;w&quot;</span>) <span class="ruby-operator">-</span> <span class="ruby-identifier">invalue</span>(<span class="ruby-string">&quot;d&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- sub-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- sub-method -->
+
+    
+      <div id="method-i-to_json" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_json</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_json-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_json</span>
+        <span class="ruby-identifier">json_outputs</span> = []
+        <span class="ruby-identifier">json_inputs</span> = []
+
+        <span class="ruby-identifier">inputs</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">json_inputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">to_json</span> }
+        <span class="ruby-identifier">outputs</span>.<span class="ruby-identifier">each</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-identifier">json_outputs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">to_json</span> }
+
+        {
+                <span class="ruby-value">:inputs</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">json_inputs</span>,
+                <span class="ruby-value">:outputs</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">json_outputs</span>,
+                <span class="ruby-value">:lock</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lock</span>,
+                <span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type</span>
+        }.<span class="ruby-identifier">to_json</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- to_json-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- to_json-method -->
+
+    
+      <div id="method-i-value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">value</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="value-source">
+            <pre><span class="ruby-comment"># File lib/terrain/src/component.rb, line 113</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">value</span>()
+  <span class="ruby-ivar">@lock</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@outputs</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- value-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- value-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.12.2.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+
