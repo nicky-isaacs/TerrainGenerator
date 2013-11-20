@@ -1,0 +1,141 @@
+/*---------------------------------------------*/
+/* Main Styles */
+/*---------------------------------------------*/
+
+body {
+	background-image: url("snowy-mountain-edit1.jpg");
+	padding: 0px;
+	font-family: "century gothic", arial, sans-serif;
+}
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+#container {
+	position: relative;
+	height: 100%;
+	width: 85%;
+	margin: auto;
+}
+
+a:link {
+	color: black;
+	text-decoration: none;
+}
+
+a:visited {
+	color: black;
+}
+
+a:hover {
+	color: white;
+}
+
+a:active {
+	color: white;
+}
+
+/*---------------------------------------------*/
+/* Header and Nav Bar */
+/*---------------------------------------------*/
+
+#header {
+	color: black;
+	width: 98%;
+	height: 5%;
+	border-color: black;
+	border-bottom-style: solid;
+}
+
+#header ul li {
+	list-style: none;
+	float: left;
+	font-size: 36px;
+	width: 25%;
+	text-align: center;
+}
+
+.footer {
+	position: fixed;
+	bottom: 0px;
+	height: 20px;
+	width: 85%;
+	background-color: #3F413D;
+	border-radius: 15px 15px 0px 0px;
+	text-align: center;
+}
+
+#header ul li:hover {
+	background-color: #3F413D;
+	border-radius: 0px 0px 10px 10px;
+	opacity: 0.9;
+}
+
+#header ul li:hover > a {
+	color:white;
+}
+
+.footer p {
+	text-align: center;
+	font-size: 14px;
+	color: white; 
+}
+
+/*---------------------------------------------*/
+/* Multiple Page basics */
+/*---------------------------------------------*/
+
+.left_area {
+	background-color: #3F413D;
+	position: relative;
+	float: left;
+	top: 5%;
+	width: 65%;
+	height: 83%;
+	border-radius: 15px;
+	opacity: 0.9;
+}
+
+.right_area {
+	background-color: #3F413D;
+	position: relative;
+	float: right;
+	top: 5%;
+	width: 32%;
+	height: 83%;
+	border-radius: 15px;
+	opacity: 0.9;
+	text-align: center;
+}
+
+.right_area ul li {
+	list-style: none;
+	padding-top: 5px;
+}
+
+label {
+	font-size: 24px;
+	color: white;
+}
+
+input {
+	padding: 5px;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: black;
+}
+
+h1 {
+	padding-top: 30px;
+	font-size: 36px;
+}
+
+.main_text {
+	color: white;
+	font-size: 24px;
+	padding: 25px;
+}
+
