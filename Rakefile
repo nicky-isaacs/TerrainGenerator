@@ -4,3 +4,8 @@
 require File.expand_path('../config/application', __FILE__)
 
 TerainGeneration::Application.load_tasks
+
+Rake::RDocTask.new do |rd|
+  rd.main = "README.rdoc"
+  rd.rdoc_files.include("README.rdoc", "lib/**/*.rb")
+end
