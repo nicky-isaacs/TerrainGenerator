@@ -7,3 +7,4 @@ Todo
 [] views parsed out into partials and layouts
 [] component model, controller, specs
 [] generator model and controller, specs
+[] spec for serialize and deserialize
