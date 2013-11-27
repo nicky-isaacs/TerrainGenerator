@@ -14,13 +14,12 @@ class ApplicationController < ActionController::Base
   end
 
   def cache_file(key, data, extension=nil)
-    begin FileUtils.mkdir_p(Rails.root, 'tmp', 'obj_caching'); rescue; end
-    path = File.join(Rails.root, 'tmp', 'obj_caching', key)
+    cache_path = File.join(Rails.root, 'tmp', 'obj_caching')
+    FileUtils.mkdir_p cache_path unless File.exists? cache_path
+    path = File.join(cache_path, key)
+    File.delete(path) if File.exists? path
     path += extension if extension
-
-    file = File.new path, "w+"
-    file << data
-    file.close
+    File.new(path, "w"){ |f| f << data }
     path
   end
 
