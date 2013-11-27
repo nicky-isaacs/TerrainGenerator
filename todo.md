@@ -8,3 +8,4 @@ Todo
 [] component model, controller, specs
 [] generator model and controller, specs
 [] spec for serialize and deserialize
+[] finalize UI
