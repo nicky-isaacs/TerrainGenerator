@@ -1,4 +1,4 @@
-class HeightMap
+class TerrainLib::HeightMap
   def export(format, filename)
 
   end
