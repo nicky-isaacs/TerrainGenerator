@@ -12,7 +12,14 @@ end
 
 group :development, :test do
   gem 'mysql2'
+end
+
+group :test do
   gem 'cucumber'
+	gem 'rspec-expectations'
+  gem 'poltergeist', ">= 1.4.0"
+  gem 'selenium-webdriver'
+	gem 'capybara'
 end
 
 # Use SCSS for stylesheets
