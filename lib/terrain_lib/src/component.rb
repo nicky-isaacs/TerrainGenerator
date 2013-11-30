@@ -74,7 +74,7 @@ module TerrainLib
       }.to_json
     end
 
-    def generate(dim, res)
+    def generate(filename, dim, res)
       return self.output["z"]
     end
 
@@ -95,6 +95,7 @@ module TerrainLib
 
     def invalue(name)
       src = @inputs[name]
+      # -1 indicates last element (have to remind myself not to "fix" this)
       return src.first.output[src[-1]]
     end
 
