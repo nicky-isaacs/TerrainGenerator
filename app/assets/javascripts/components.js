@@ -3,11 +3,41 @@
 //# You can use CoffeeScript in this file: http://coffeescript.org/
 
 gatherComponentArgs = function(){
+    var fieldsets = $('fieldset');
+    return recursiveLinkComponents(fieldsets);
+}
 
+recursiveLinkComponents = function(componentsArr){
+    var components={};
+
+    if(componentsArr.length == 1){
+        components['id'] = $(componentsArr[0]).find('select').value; // this is wrong
+        components['type'] = $(componentsArr[0]).find('select').value;
+        components['inputs'] = $(componentsArr[0]).find('input.inputs').value;
+        components['outputs'] = $(componentsArr[0]).find('input.outputs').value;
+
+        if (verifyInputs(components['type'], components['inputs'])){
+            return components
+        } else{
+            alert("Oops! Something went wrong. Isn't this embarrassing");
+        }
+    } else{
+        var thisComponent = componentsArr.pop();
+        components['type'] = $(thisComponent).find('select').value;
+        components['id'] = $(thisComponent).parent('.component_field_wrapper').data('id');
+        components['inputs'] = recursiveLinkComponents(componentsArr);
+    }
+
+    console.log(components);
+    return components;
 }
 
 getComponentTypes = function(){
     return gon.component_types;
+}
+
+getComponentInputOutputMap = function(){
+    return gon.component_lookup_table;
 }
 
 countComponents = function(){

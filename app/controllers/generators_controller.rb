@@ -116,6 +116,7 @@ class GeneratorsController < ApplicationController
 
   def expose_js_variables
     gon.component_types = TerrainLib::ComponentTypesLookup.types
+    gon.component_lookup_table = TerrainLib::ComponentTypesLookup.lookup_table
   end
 
 end

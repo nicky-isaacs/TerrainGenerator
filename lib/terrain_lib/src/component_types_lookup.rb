@@ -10,8 +10,6 @@ module TerrainLib
         lookup_table.keys
       end
 
-      private
-
       def lookup_table
         {
             'mult' => [ %w(x y z w b), %w(x y z w) ],
