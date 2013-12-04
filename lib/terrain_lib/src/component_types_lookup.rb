@@ -6,6 +6,10 @@ module TerrainLib
 
       end
 
+      def types
+        lookup_table.keys
+      end
+
       private
 
       def lookup_table
