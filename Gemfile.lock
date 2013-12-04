@@ -99,6 +99,8 @@ GEM
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
     polyglot (0.3.3)
+    protected_attributes (1.0.5)
+      activemodel (>= 4.0.1, < 5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -187,6 +189,7 @@ DEPENDENCIES
   perlin
   pg
   poltergeist (>= 1.4.0)
+  protected_attributes
   rails (= 4.0.1)
   rspec-expectations
   sass-rails (~> 4.0.0)
