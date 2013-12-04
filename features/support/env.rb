@@ -17,8 +17,10 @@ else
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(
       app,
-      window_size: [1280, 1024]#,
-      #debug:       true
+      {
+        window_size: [1280, 1024],
+        js_errors: false
+      }
     )
   end
   Capybara.default_driver    = :poltergeist
@@ -29,7 +31,7 @@ Capybara.default_selector = :css
 World(RSpec::Matchers)
 
 # configure the base urls for frontend and backend here
-$terrain_generator_base = 'http://localhost:8000/app/'
+$terrain_generator_base = 'http://0.0.0.0:3000'
 
 def ui_url(path)
   $terrain_generator_base + path
