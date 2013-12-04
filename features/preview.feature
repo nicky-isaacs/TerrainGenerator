@@ -5,4 +5,4 @@ Feature: Ability to preview terrains
   
   Scenario: Goto preview page
     When I visit the preview page
-    I should see a 3D viewer
+    Then I should see a 3D viewer
