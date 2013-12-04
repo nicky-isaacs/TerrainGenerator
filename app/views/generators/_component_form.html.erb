@@ -15,12 +15,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Select Components</h4>
+        <h4 class="modal-title" id="myModalLabel">Add Components</h4>
       </div>
       <div class="modal-body">
 
         <div class="modal-body" id="component_creation_modal">
           <div class="component_field_wrapper" data-id="1">
+            <h2>Component 1</h2>
             <fieldset class="components">
               <select class="components">
                 <% @component_types.each do |value| %>
@@ -32,13 +33,16 @@
               <br>
               <input class="components" id="outputs"></input>
             </fieldset>
-            <button type="button" class="btn btn-success component_add">Add Another!</button>
           </div>
+          <br>
+
         </div>
       </div>
+      <button type="button" class="btn btn-success component_add">Add Another!</button>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary genarator_save">Save Generator</button>
+        <button type="button" class="btn btn-danger genarator_delete">Fuggin' Delete It</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

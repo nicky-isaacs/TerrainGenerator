@@ -10,11 +10,23 @@ getComponentTypes = function(){
     return gon.component_types;
 }
 
+countComponents = function(){
+    return $('.component_field_wrapper').length + 1;
+}
+
 addComponentForm = function(){
-    var wrapper = $('<div class="component_field_wrapper"></div>');
+    var wrap_str = '<div class=\"component_field_wrapper\" data-id=' + countComponents().toString() +'></div>';
+
+    var wrapper = $('<div class="component_field_wrapper" data-id=' + countComponents().toString() +'></div>');
+    console.log(wrapper.toString());
     var field_set = $('<fieldset class="components"></fieldset>');
 
     var field_children=[];
+
+    var component_head = $('<h2></h2>');
+    component_head.html("Component " + countComponents());
+    wrapper.append(component_head);
+    wrapper.append('<br>');
 
     var select = $('<select class="components"></select>')
     $(getComponentTypes()).each(function(index){
@@ -40,10 +52,6 @@ addComponentForm = function(){
     wrapper.append(field_set);
     var modal_body = '#component_creation_modal';
     $(modal_body).append(wrapper);
-
-    var button = $('<button type="button" class="btn btn-success component_add">Add Another!</button>');
-    $(modal_body).append(button);
-    attachClickCallbacks();
 }
 
 attachClickCallbacks = function(){
