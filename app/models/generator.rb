@@ -3,8 +3,10 @@ class Generator < ActiveRecord::Base
   # For now we will assume that this takes a root node and an array
   # of other components
 
-  attr_accessible :root, :components
-  attr_accessor :root, :components
+  attr_accessible :root
+  attr_accessor :root
+
+  has_many :components
 
   after_find :deserialize
   before_save :serialize

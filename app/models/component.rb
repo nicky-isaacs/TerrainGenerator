@@ -2,9 +2,10 @@ class Component < ActiveRecord::Base
 
   before_save :serialize
   after_find :deserialize
+  belongs_to :generator
 
-  attr_accessible :lock, :input, :output
-  attr_accessor :lock, :input, :output
+  attr_accessible :lock, :inputs, :outputs, :type
+  attr_accessor :lock, :inputs, :outputs, :type
 
 	#def initialize(params={})
 	#	if params[:output]
