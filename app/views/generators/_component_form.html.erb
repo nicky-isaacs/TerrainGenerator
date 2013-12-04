@@ -1,3 +1,9 @@
+<%= javascript_include_tag 'components' %>
+
+<%= javascript_tag do %>
+    var component_types = <%= @component_types %>
+<% end %>
+
 <!-- Button trigger modal -->
 <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   New Component
@@ -9,27 +15,30 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">Select Components</h4>
       </div>
       <div class="modal-body">
 
-        <div class="modal-body">
-          <fieldset class="components">
-            <select class="components">
-              <% @component_types.each do |value| %>
-                <option value="<%= value %>"><%= value.humanize %></option>
-              <% end %>
-            </select>
-            <br>
-            <input class="components" id="inputs"></input>
-            <br>
-            <input class="components" id="outputs"></input>
-          </fieldset>
+        <div class="modal-body" id="component_creation_modal">
+          <div class="component_field_wrapper" data-id="1">
+            <fieldset class="components">
+              <select class="components">
+                <% @component_types.each do |value| %>
+                    <option value="<%= value %>"><%= value.humanize %></option>
+                <% end %>
+              </select>
+              <br>
+              <input class="components" id="inputs"></input>
+              <br>
+              <input class="components" id="outputs"></input>
+            </fieldset>
+            <button type="button" class="btn btn-success component_add">Add Another!</button>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary genarator_save">Save Generator</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

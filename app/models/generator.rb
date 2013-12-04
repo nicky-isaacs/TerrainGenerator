@@ -3,13 +3,8 @@ class Generator < ActiveRecord::Base
   # For now we will assume that this takes a root node and an array
   # of other components
 
-  attr_accessible :root
-  attr_accessor :root
-
-  has_many :components
-
-  after_find :deserialize
-  before_save :serialize
+  attr_accessible :generator_hash
+  attr_accessor :generator_hash
 
   def obj_file
 

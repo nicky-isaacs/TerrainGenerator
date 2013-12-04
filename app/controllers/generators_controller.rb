@@ -2,6 +2,7 @@ class GeneratorsController < ApplicationController
   before_action :set_generator, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :setup_view_variables, only: [:new, :show, :index]
+  before_action :expose_js_variables
 
 
   # GET /generators
@@ -29,11 +30,8 @@ class GeneratorsController < ApplicationController
   def create
     components = handle_components
 
-    # Generator is created from the head
-    @generator = Generator.new(components.first)
-
     respond_to do |format|
-      if @generator.save && !errors_creating_components?
+      if @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
         format.json { render action: 'show', status: :created, location: @generator }
       else
@@ -83,34 +81,11 @@ class GeneratorsController < ApplicationController
   # Debating on whether to put this in component or generator controller
   # leaning towards putting it here and removing from component controller
 
+  # [{:id, :inputs = { input_variable: { output_object_id: 1, output_variable: test }, }, :outputs, :type}, {}, {}]
+
+  # { type: 'mult',  }
   def handle_components
-    params_id_to_db_id={}
-
-    component_args = params[:components]
-    raw_components=[]
-    component_args.each do |component_arg|
-      component = Component.new component_arg
-      component.generator = self
-      params_id_to_db_id[component_arg[:id]] = component.id
-      raw_components << component
-    end
-
-    clean_components=[]
-    raw_components.each_with_index do |c|
-      c.in_ids.each_with_index{ |v, i| c.inputs[i] = params_id_to_db_id[v] }
-      c.out_id.each_with_index{ |v, i| c.outputs[i] = params_id_to_db_id[v] }
-      clean_components << c
-    end
-
-    clean_components.each do |a|
-      if a.save
-        components << a
-      else
-        error_creating_component
-      end
-    end
-
-    clean_components
+    @generator = Generator.new (params[:components].to_json)
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -137,6 +112,10 @@ class GeneratorsController < ApplicationController
 
   def setup_view_variables
     @component_types = TerrainLib::ComponentTypesLookup.types
+  end
+
+  def expose_js_variables
+    gon.component_types = TerrainLib::ComponentTypesLookup.types
   end
 
 end
