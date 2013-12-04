@@ -1,6 +1,7 @@
 class GeneratorsController < ApplicationController
   before_action :set_generator, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :setup_view_variables, only: [:new, :show, :index]
 
 
   # GET /generators
@@ -132,6 +133,10 @@ class GeneratorsController < ApplicationController
 
   def error_creating_component
     @was_error_creating_component = true
+  end
+
+  def setup_view_variables
+    @component_types = TerrainLib::ComponentTypesLookup.types
   end
 
 end
