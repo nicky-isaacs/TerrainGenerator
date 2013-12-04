@@ -17,8 +17,7 @@
           <fieldset class="components">
             <select class="components">
               <% @component_types.each do |value| %>
-                  <!--<option value="volvo">Volvo</option>-->
-                  <option value="<%= value %>"><%= value.humanize %></option>
+                <option value="<%= value %>"><%= value.humanize %></option>
               <% end %>
             </select>
             <br>
