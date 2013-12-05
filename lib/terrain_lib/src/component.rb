@@ -160,7 +160,7 @@ module TerrainLib
     end
 
     def random()
-      r = Random.new(invalue("sd") + 1233)
+      r = Random.new(invalue("sd"))
       @outputs["x"] = invalue("lo") + r.rand(invalue("hi"))
       @outputs["y"] = invalue("lo") + r.rand(invalue("hi"))
       @outputs["z"] = invalue("lo") + r.rand(invalue("hi"))
@@ -204,17 +204,17 @@ module TerrainLib
 
     def mag()
       @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                    invalue("y") * invalue("y") +
-                                    invalue("z") * invalue("z") +
-                                    invalue("w") * invalue("w"))
+                                invalue("y") * invalue("y") +
+                                invalue("z") * invalue("z") +
+                                invalue("w") * invalue("w"))
       return @outputs
     end
 
     def norm()
       @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                    invalue("y") * invalue("y") +
-                                    invalue("z") * invalue("z") +
-                                    invalue("w") * invalue("w"))
+                                invalue("y") * invalue("y") +
+                                invalue("z") * invalue("z") +
+                                invalue("w") * invalue("w"))
       @outputs["x"] = invalue("x") / @outputs["m"]
       @outputs["y"] = invalue("x") / @outputs["m"]
       @outputs["z"] = invalue("x") / @outputs["m"]
@@ -235,3 +235,4 @@ module TerrainLib
     end
   end
 end
+
