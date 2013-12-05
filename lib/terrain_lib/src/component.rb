@@ -21,99 +21,49 @@ require 'json'
 
 module TerrainLib
   class Component
-    attr_accessor :inputs
-
-    class << self
-
-      def deserialize(json_string)
-        args = JSON.parse(json_string).symbolize_keys
-        inflated_outputs=[]
-        inflated_inputs=[]
-
-        args[:outputs].each do |o|
-          inflated_outputs << deserialize(o)
-        end
-
-        args[:inputs].each do |i|
-          inflated_inputs << deserialize(i)
-        end
-
-        args[:inputs] = inflated_inputs
-        args[:outputs] = inflated_outputs
-
-        self.new(args)
-      end
-
-    end
-
     def initialize( params={} )
       @outputs = params[:outputs]
       @inputs = params[:inputs]
-      @lock = true unless( @lock = params[:lock] )
       @type = params[:type]
       @name = params[:name]
-
-      if @type == "value" then
-        @output
-        @lock = true
-      end
+      @sampler = nil
     end
 
-    def to_json
-      json_outputs = []
-      json_inputs = []
-
-      inputs.each{ |i| json_inputs << i.to_json }
-      outputs.each{ |o| json_outputs << o.to_json }
-
-      {
-          :inputs => json_inputs,
-          :outputs => json_outputs,
-          :lock => lock,
-          :type => type
-      }.to_json
+    def sample(coord)
+        @sampler = coord
+        result = self.output
+        @sampler = nil
+        return result
     end
-
-    def generate(filename, dim, res)
-      return self.output["z"]
-    end
-
-    def output
-      if @outputs != nil or @lock then return @outputs end
-      return self.send(@type)
-    end
-
-    def output=(val)
-      if val == nil then return end
-      if not @lock then
-        @outputs = val
-        if @type == "value" then
-          @lock = true
+    
+    def reset()
+        @outputs = nil
+        @inputs.each do |k,v|
+            if v != "sampler" then
+                v.first.reset()
+            end
         end
-      end
+    end
+
+    def generate()
+    
+    end
+
+    def output()
+      if @outputs != nil then return @outputs end
+      return self.send(@type)
     end
 
     def invalue(name)
       src = @inputs[name]
+      if src.first == "sampler" then
+          return @sampler[src[-1]]
+      end
       # -1 indicates last element (have to remind myself not to "fix" this)
       return src.first.output[src[-1]]
     end
 
-    def reset()
-      if @type != "value" then @outputs = nil end
-    end
-
-# Component getvalue methods
-    def pipe()
-      @inputs.each{ |name, source|
-        @outputs = Hash.new()
-        @outputs[name] = invalue(name)
-      }
-      return @outputs
-    end
-
-    def value()
-      @lock = true
+    def value(c)
       return @outputs
     end
 
