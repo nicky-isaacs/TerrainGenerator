@@ -2,8 +2,36 @@
 //# All this logic will automatically be available in application.js.
 //# You can use CoffeeScript in this file: http://coffeescript.org/
 
+cleanInputs = function(required, passed){
+    console.log("Cleaning: " + passed.toString() );
+    console.log("Required: " + required );
+    var passedArr = passed.split(",").map(function(item){
+        return parseInt(item);
+    });
+
+    var requiredLookup = getComponentInputOutputMap()[required.toLowerCase()][0];
+
+    console.log(requiredLookup);
+    console.log("Lookup map: " + getComponentInputOutputMap());
+
+    var diffenceInParamsLength = requiredLookup[0].length - passed.length;
+
+    if (diffenceInParamsLength < 0){ // To few parameters
+        diffenceInParamsLength = diffenceInParamsLength^2;
+        for( var i=0; i<diffenceInParamsLength; i++){
+            passed.push(1);
+        }
+    } else if(diffenceInParamsLength > 0){ // To many parameters
+        for( var i=0; i<diffenceInParamsLength; i++){
+            passed.pop();
+        }
+    }
+
+    return passed;
+}
+
 gatherComponentArgs = function(){
-    var fieldsets = $('fieldset');
+    var fieldsets = $('fieldset').toArray();
     return recursiveLinkComponents(fieldsets);
 }
 
@@ -11,16 +39,16 @@ recursiveLinkComponents = function(componentsArr){
     var components={};
 
     if(componentsArr.length == 1){
-        components['id'] = $(componentsArr[0]).find('select').value; // this is wrong
-        components['type'] = $(componentsArr[0]).find('select').value;
-        components['inputs'] = $(componentsArr[0]).find('input.inputs').value;
-        components['outputs'] = $(componentsArr[0]).find('input.outputs').value;
+        components['id'] = $(componentsArr[0]).parent('.component_field_wrapper').data('id');
+        components['type'] = $(componentsArr[0]).find('select')[0].value;
 
-        if (verifyInputs(components['type'], components['inputs'])){
-            return components
-        } else{
-            alert("Oops! Something went wrong. Isn't this embarrassing");
-        }
+        var passedInputs = $(componentsArr[0]).find('input#inputs')[0].value
+        console.log("Inputs: " + passedInputs.toString() );
+        components['inputs'] = cleanInputs(components['type'], passedInputs);
+        components['outputs'] = $(componentsArr[0]).find('input#outputs')[0].value;
+
+        return components
+
     } else{
         var thisComponent = componentsArr.pop();
         components['type'] = $(thisComponent).find('select').value;
@@ -85,8 +113,8 @@ addComponentForm = function(){
 }
 
 attachClickCallbacks = function(){
-    $('.component_save').click(function(){
-        postGenerator();
+    $('button.genarator_save').click(function(){
+        console.log(gatherComponentArgs());
     });
 
     $('button.component_add').click(function(){
