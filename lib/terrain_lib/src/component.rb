@@ -1,7 +1,4 @@
-require 'json'
-
 #types...
-#  result: forwards a single value "z"
 #  value: outputs constant value by name "v"
 #  mult: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
 #  div: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
@@ -23,21 +20,25 @@ module TerrainLib
   class Component
     def initialize( params={} )
       @outputs = params[:outputs]
+      if @outputs == nil then @outputs = {} end
       @inputs = params[:inputs]
+      if @inputs == nil then @inputs = {} end
       @type = params[:type]
+      if @type == nil then @type = "value" end
       @name = params[:name]
-      @sampler = nil
+      if @name == nil then @name = "unnamed" end
     end
 
     def sample(coord)
-        @sampler = coord
+        @@sampler = coord
         result = self.output
-        @sampler = nil
+        reset()
         return result
     end
     
     def reset()
-        @outputs = nil
+        @outputs = {}
+        @@sampler = nil
         @inputs.each do |k,v|
             if v != "sampler" then
                 v.first.reset()
@@ -46,24 +47,31 @@ module TerrainLib
     end
 
     def generate()
-    
+      filename = Time.new.getutc.to_s + ".obj"
+      File.open(filename, mode="w"){ |file|
+        # TO WRITE: file.write(str)
+        # NOTE: does not append \n
+        
+      }
+      return filename
     end
 
     def output()
-      if @outputs != nil then return @outputs end
+      if @outputs.keys.size > 0 then return @outputs end
       return self.send(@type)
     end
 
     def invalue(name)
       src = @inputs[name]
+      if src == nil then return Float::NAN end
       if src.first == "sampler" then
-          return @sampler[src[-1]]
+          return @@sampler[src[-1]]
       end
       # -1 indicates last element (have to remind myself not to "fix" this)
       return src.first.output[src[-1]]
     end
 
-    def value(c)
+    def value()
       return @outputs
     end
 
