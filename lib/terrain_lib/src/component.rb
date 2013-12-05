@@ -1,3 +1,5 @@
+require 'perlin'
+
 #types...
 #  value: outputs constant value by name "v"
 #  mult: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
@@ -17,6 +19,11 @@
 # generates from this root component, with specified dimensions and resolution
 
 module TerrainLib
+    # converts metadata to Components, and then generates terrain from it.
+    def generate(metadata)
+    
+    end
+
   class Component
     def initialize( params={} )
       @outputs = params[:outputs]
@@ -45,8 +52,29 @@ module TerrainLib
             end
         end
     end
-
+    
+=begin
+{
+    <component_name:string> => 
+    {
+        "type" => <type_name:string>,
+        
+        # not necessary if type is "value"
+        "inputs" =>
+        {
+            "input_names" => [<source_name:string>, <output_name:string>]
+        },
+        
+        # not necessary unless type is "value"
+        "outputs" =>
+        {
+            "output_names" => <output_value:number>
+        },
+    }
+}
+=end
     def generate()
+      
       filename = Time.new.getutc.to_s + ".obj"
       File.open(filename, mode="w"){ |file|
         # TO WRITE: file.write(str)
@@ -141,11 +169,37 @@ module TerrainLib
     end
 
     def perlin()
-
+        sd = invalue("sd")
+        if sd == Float.NAN then sd = 0 end
+        sd = sd.abs
+        p = Perlin::Generator.new(sd, 1, 1, {:classic = true})
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        w = invalue("w")
+        if x == Float.NAN then x = 0 end
+        if y == Float.NAN then y = 0 end
+        if z == Float.NAN then z = 0 end
+        if w == Float.NAN then w = 0 end
+        @outputs["v"] = p[x, y, z, w]
+        return @outputs
     end
 
     def simplex()
-
+        sd = invalue("sd")
+        if sd == Float.NAN then sd = 0 end
+        sd = sd.abs
+        s = Perlin::Generator.new(sd, 1, 1, {:classic = false})
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        w = invalue("w")
+        if x == Float.NAN then x = 0 end
+        if y == Float.NAN then y = 0 end
+        if z == Float.NAN then z = 0 end
+        if w == Float.NAN then w = 0 end
+        @outputs["v"] = s[x, y, z, w]
+        return @outputs
     end
 
     def mag()
