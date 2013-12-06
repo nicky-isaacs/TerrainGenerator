@@ -32,8 +32,8 @@ var components_added = 0;
 harvestComponents = function(){
     console.log("Now trying to harvest results");
     var user_components = $('.' + component_field_wrapper_class);
-    var parameters = convertToComponentsJSON(user_components);
-    var clean_params = fillInMissingData(parameters);
+    var clean_params = convertToComponentsJSON(user_components);
+    console.log("JSON component representation: " + clean_params);
     return clean_params;
 }
 
@@ -42,8 +42,8 @@ harvestComponents = function(){
 //  name_str: {
 //      type: 'type_str',
 //      inputs: {
-//          name_str: variable_str},
-        }
+//          variable_str: [source_name_str, output_name_str] },
+//      }
 //      outputs: {
 //          name_str: variable_str
 //      }
@@ -65,20 +65,65 @@ convertToComponentsJSON = function(divs){
 
     $(divs).each(function(index){
         console.log("working on collecting data from: " + this);
-        var name = '';
-        var inputs = getInputDependencies(this);
+        var fieldsets = $(this).children('fieldset');
+        var type_fieldset = fieldsets[0];
+        var name = $(this).children('h2').html();
+        var type = $(type_fieldset).children('select').val();
+
         var outputs = {};
-        var type = {};
+        if (!isValue(type)){
+            var inputs = getInputDependencies(this);
+            if(!verifyInputParameters(type, inputs)){
+                showAlert("Jackass: ", "Some of your inputs are missing.", BOOTSTRAP_DANGER_ALERT);
+                return -1;
+            }
+        } else{
+            inputs = {};
+            outputs[name] = 'v';
+        }
         var container = {};
-
-        name = $(this).find('h2').html();
-
+        container['inputs'] = inputs;
+        container['outputs'] = outputs;
+        container['type'] = type;
+        data[name] = container;
     });
 
+    console.log(data.toString());
+    return data;
+}
+
+isValue = function(type){
+    return (type == 'value');
+}
+
+verifyInputParameters = function(type, inputs){
+    if (!isValue(type)){
+        var required_inputs = getTypeInputArgs(type);
+        var input_keys = Object.keys(inputs);
+        return (input_keys.length == required_inputs.length );
+    } else{
+        return true; // Hmmmmm this might cause problems?
+    }
 }
 
 getInputDependencies = function(component){
+    var fieldsets = $(component).children('fieldset');
+    var variable_fieldset = fieldsets[0];
+    var div_wrappers = $(variable_fieldset).children('div.input_field_wrapper');
 
+    var result = {};
+
+    $(div_wrappers).each(function(index){
+        var input_variable_str = $(this).children('label').prop('for'); // need to know name of variable being picked
+        var selects = $(this).children('select');
+        var component_selector = selects[0];
+        var variable_selector = selects[1];
+
+        var component_name = $(component_selector).val();
+        var component_variable = $(variable_selector).val();
+        result[input_variable_str] = [component_name, component_variable];
+    });
+    return result;
 }
 
 
@@ -397,20 +442,21 @@ inputComponentChangedCallback = function(target){
 }
 
 saveGeneratorButtonCallback = function(){
-    alert("you clicked save");
+    alert('you pressed save');
     var json_representation = harvestComponents();
-    var ajax_setitngs = {
-        url: '/generators/new',
+    var ajax_settings = {
+        content: 'application/json',
+        url: '/generators.json',
         type: 'POST',
         data: json_representation,
-        success: function(){ ajaxSucceedCallback(this) },
-        error: function(){ ajaxFailedCallback(this) }
+        success: function(){ ajaxDidSucceedCallback(this) },
+        error: function(){ ajaxDidFailCallback(this) }
     };
 
-    $.ajax(ajax_setitngs);
+    $.ajax(ajax_settings);
 }
 
-ajaxSucceedCallback = function(data){
+ajaxDidSucceedCallback = function(data){
     if ( !data['errors'] ) {
         showAlert( "#Winning", "Terrain Generator is now building your Fancy Thing!", BOOTSTRAP_SUCCESS_ALERT);
     } else {
@@ -418,7 +464,7 @@ ajaxSucceedCallback = function(data){
     }
 }
 
-ajaxFailedCallback = function(data){
+ajaxDidFailCallback = function(data){
     console.log("Ajax error: " + data);
     showAlert("Danger! Danger! Danger!", "Bleep blorp bloop, Terrain Generator isn't happy :\( . Sorry about that, how about trying again?", BOOTSTRAP_DANGER_ALERT);
 }

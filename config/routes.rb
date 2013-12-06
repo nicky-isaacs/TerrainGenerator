@@ -11,6 +11,8 @@ TerainGeneration::Application.routes.draw do
 
   get '/generator/new' => 'generators#new'
 
+  post '/generator' => 'generator#create'
+
 	# The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

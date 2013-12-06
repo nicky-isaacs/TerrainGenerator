@@ -65,3 +65,4 @@ gem 'devise'
 gem "twitter-bootstrap-rails"
 gem 'protected_attributes' # Backwards compatibility for attr_accessible
 gem 'gon'
+gem 'debugger'

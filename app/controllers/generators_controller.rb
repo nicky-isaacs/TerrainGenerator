@@ -36,7 +36,7 @@ class GeneratorsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @generator }
       else
         format.html { render action: 'new' }
-        format.json { render json: @generator.errors, status: :unprocessable_entity }
+        format.json { render json: @generator.errors, status: :unprocessable_entity, errors: 'Could Not Create Generator' }
       end
     end
   end
@@ -85,6 +85,7 @@ class GeneratorsController < ApplicationController
 
   # { type: 'mult',  }
   def handle_components
+    require 'debugger'; debugger
     @generator = Generator.new (params[:components].to_json)
   end
 
