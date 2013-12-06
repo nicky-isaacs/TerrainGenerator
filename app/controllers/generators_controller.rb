@@ -1,5 +1,5 @@
 class GeneratorsController < ApplicationController
-  before_action :set_generator, only: [:show, :edit, :update, :destroy]
+  #before_action :set_generator, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :setup_view_variables, only: [:new, :show, :index]
   before_action :expose_js_variables
