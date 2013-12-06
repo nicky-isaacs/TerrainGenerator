@@ -1,9 +1,5 @@
 <%= javascript_include_tag 'components' %>
 
-<%= javascript_tag do %>
-    var component_types = <%= @component_types %>
-<% end %>
-
 <!-- Button trigger modal -->
 <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
   New Component
@@ -20,21 +16,7 @@
       <div class="modal-body">
 
         <div class="modal-body" id="component_creation_modal">
-          <div class="component_field_wrapper" data-id="1">
-            <h2>Component 1</h2>
-            <fieldset class="components">
-              <select class="components">
-                <% @component_types.each do |value| %>
-                    <option value="<%= value %>"><%= value.humanize %></option>
-                <% end %>
-              </select>
-              <br>
-              <input class="components" id="inputs"></input>
-              <br>
-              <input class="components" id="outputs"></input>
-            </fieldset>
-          </div>
-          <br>
+
 
         </div>
       </div>
@@ -48,4 +30,15 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--<div class="component_field_wrapper" data-id="1">-->
+<!--<h2>Component 1</h2>-->
+<!--<fieldset class="components">-->
 
+<!--<select class="component_selection">-->
+<!--<% @component_types.each do |value| %>-->
+    <!--<option value="<%= value %>"><%= value.humanize %></option>-->
+    <!--<% end %>-->
+<!--</select>-->
+<!--</fieldset>-->
+<!--</div>-->
+<!--<br>-->

@@ -1,20 +1,27 @@
-//# Place all the behaviors and hooks related to the matching controller here.
-//# All this logic will automatically be available in application.js.
-//# You can use CoffeeScript in this file: http://coffeescript.org/
+/*
+ # Place all the behaviors and hooks related to the matching controller here.
+ # All this logic will automatically be available in application.js.
+ # You can use CoffeeScript in this file: http://coffeescript.org/
 
-//Todo:
-//
-//    [x] name should update when the name is changed
-//    [] dropdowns should be populated with existing components
-//    [x] value type should accept one value
-//    [] source drop downs should accept outputs of others components
-//    [] should attach the proper callbacks to selects
+ Todo:
+
+ [x] name should update when the name is changed
+ [] dropdowns should be populated with existing components
+ [x] value type should accept one value
+ [] source drop downs should accept outputs of others components
+ [] should attach the proper callbacks to selects
 
 
-var component_select_class = "component_selection";
+ create "first"
+ choose variables
+ create "second"
+ create
+ */
+
+var component_select_class = "component_select";
 var component_variable_select_class = "component_variable_selection";
 var colon_separator_class = 'colon_separator';
-var input_field_wrapper_class = 'wrapper';
+//var input_field_wrapper_class = 'field_wrapper';
 var component_field_wrapper_class = "component_field_wrapper";
 var component_name_input_class = 'component_name';
 
@@ -26,6 +33,7 @@ createFieldBasedOnType = function(type){
     var input_field_names = getComponentInputOutputMap()[type.toLowerCase()][0];
     var name_label = $('<label for=\"componentName\">Component Name</label>');
     var name_field = $('<input class=\"' + component_name_input_class + '\" placeholder=\"Name\"></input>');
+    name_field.change(function(){ nameChangeInputCallback(this) });
 
     var input_field_options=[];
     $(input_field_names).each(function(index){
@@ -45,15 +53,19 @@ createFieldBasedOnType = function(type){
             var src_component_select_label = $('<label for=\"' + this +  '\">' + this + '</label>');
             var src_component_select_with_options = appendToSelect(src_component_select, input_field_options);
 
-            $(src_component_select_with_options).change(function(){ componentSelectCallback($(this)) });
+            $(src_component_select_with_options).click(function(){ inputComponentCallback($(this)) });
+            $(src_component_select_with_options).change(function(){ inputComponentChangedCallback(this) });
 
-
+            // Need a label, and options
             var component_variable_select_str = '<select class=\"' + component_variable_select_class + 'float_left\"></select>';
-            var componet_variable_
+            var component_variable_select_label = $('<label for=\"' + this +  '_variable\">' + this + '</label>');
             var component_variable_select_tag = $(component_variable_select_str);
 
             wrapper.append(src_component_select_label);
             wrapper.append(src_component_select_with_options);
+            wrapper.append(colonDivSeparator());
+            wrapper.append(component_variable_select_label);
+            wrapper.append(component_variable_select_tag);
             input_field_tags.push(wrapper);
         });
     } else{
@@ -120,10 +132,49 @@ appendToSelect = function(select, options){
 
 // Helper to get the names of the existing components
 existingComponentNames = function(){
-    var names=[]
+    var names=[];
     $('.' + component_field_wrapper_class).find('h2').each(function(){ names.push( $(this).html() ) });
     //console.log("*****Existing names: " + names.toString() );
     return names;
+}
+
+getExistingComponentType = function(name){
+    var answer='';
+    $('.' + component_field_wrapper_class).find('h2').each(function(index){
+        console.log("Comparing: " + $(this).html() + ' and ' + name)
+        if ($(this).html() == name){
+            var fieldset = $(this).siblings('fieldset')[0];
+            var val =  $(fieldset).children('select.' + component_select_class).val();
+            console.log("Type of " + name + " was: " + val);
+            answer = val;
+            return false;
+        }
+    });
+
+    if (''==answer){
+        return 0;
+    } else{
+        return answer;
+    }
+
+}
+
+// Given a type, returns the arguments that it takes
+getTypeInputArgs = function(type){
+    return getComponentInputOutputMap()[type][0];
+}
+
+// Array of objs with name and type
+existingCompnentsWithTypes = function(){
+    var components={};
+    $('.' + component_field_wrapper_class).each(function(){
+        var name = $(this).find('h2').html();
+        var type = $(this).find('select.' + component_select_class ).val();
+        console.log("Type was: " + type);
+        console.log("Name was: " + name);
+        components[name] = type;
+    });
+    return components;
 }
 
 cleanInputs = function(required, passed){
@@ -185,7 +236,7 @@ addComponentForm = function(){
     wrapper.append(component_head);
     wrapper.append('<br>');
 
-    var select = $('<select class="components"></select>')
+    var select = $('<select class=\"' + component_select_class + '\"></select>')
     select.change(function(){ componentSelectCallback($(this)) });
 
     $(getComponentTypes()).each(function(index){
@@ -222,6 +273,19 @@ rmExistingComponentFields = function(select){
     $(select).parent('fieldset').siblings('fieldset').remove();
 }
 
+deleteFromArray = function(arr, term){
+    for (var i=arr.length-1; i>=0; i--) {
+        if (arr[i] === term) {
+            arr.splice(i, 1);
+        }
+    }
+    return arr;
+}
+
+emptyOptionTag = function(){
+    return $('<option value=""></option>');
+}
+
 
 //------------- Callbacks -------------
 
@@ -233,12 +297,56 @@ componentSelectCallback = function(select){
     addFieldsToComponent(wrapper, type);
 }
 
+// Find all existing components
+// attach them to the next select
+inputComponentCallback = function(target){
+    var sibling = $(target).siblings('select')[0]; // the next select
+    var this_name = $(target).parent().parent().siblings('h2').html();
+    var selected_value = $(target).val();
+    var existing_components = deleteFromArray(existingComponentNames(), this_name);
+    existing_components = deleteFromArray(existing_components, selected_value);
+
+    var default_option_str = '<option value=\"' + selected_value + '\">' + selected_value + '</option>';
+    var options = [$(default_option_str)];
+
+    $(existing_components).each(function(index){
+        var option_str = '<option value=\"' + this + '\">' + this + '</option>';
+        var option_tag = $(option_str);
+        options.push(option_tag);
+    });
+
+    $(target).empty();
+    appendToSelect(target, options);
+}
+
+inputComponentChangedCallback = function(target){
+    var selected_component = $(target).val();
+    var type_of_selected = getExistingComponentType(selected_component);
+
+    var options=[];
+    if (type_of_selected != 'value'){
+      var variable_options = getTypeInputArgs(type_of_selected);
+      options.push(emptyOptionTag());
+    } else{
+      var variable_options = ['output'];
+    }
+
+    var variable_selector = $(target).siblings('select')[0];
+    console.log("Sibling was: " + variable_selector);
+    $(variable_options).each(function(index){
+        var option_str = '<option value=\"' + this + '\">' + this + '</option>';
+        var option_tag = $(option_str);
+        options.push(option_tag);
+    });
+
+    appendToSelect($(variable_selector), options);
+}
+
 saveGeneratorButtonCallback = function(){
 
 }
 
 addComponentButtonCallback = function(){
-    alert('you clicked add');
     addComponentForm();
 }
 
@@ -257,5 +365,6 @@ attachCallbacks = function(){
 
 
 $('document').ready(function(){
+    addComponentForm();
     attachCallbacks();
 });
