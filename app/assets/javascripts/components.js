@@ -328,7 +328,7 @@ inputComponentChangedCallback = function(target){
       var variable_options = getTypeInputArgs(type_of_selected);
       options.push(emptyOptionTag());
     } else{
-      var variable_options = ['output'];
+      var variable_options = ['v'];
     }
 
     var variable_selector = $(target).siblings('select')[0];
