@@ -28,6 +28,61 @@ var component_name_input_class = 'component_name';
 
 var components_added = 0;
 
+// Used to collect the user parameters and return a valid json object
+harvestComponents = function(){
+    console.log("Now trying to harvest results");
+    var user_components = $('.' + component_field_wrapper_class);
+    var parameters = convertToComponentsJSON(user_components);
+    var clean_params = fillInMissingData(parameters);
+    return clean_params;
+}
+
+// Helper to turn HTML into json obj in format:
+// {
+//  name_str: {
+//      type: 'type_str',
+//      inputs: {
+//          name_str: variable_str},
+        }
+//      outputs: {
+//          name_str: variable_str
+//      }
+//  },
+//  name_str: {
+//      type: 'type_str',
+//      inputs: {
+//          name_str: variable_str
+//      },
+//      outputs: {
+//          name_str: variable_str
+//      }
+//  }
+// }
+
+// Helper to parse divs for data
+convertToComponentsJSON = function(divs){
+    var data = {};
+
+    $(divs).each(function(index){
+        console.log("working on collecting data from: " + this);
+        var name = '';
+        var inputs = getInputDependencies(this);
+        var outputs = {};
+        var type = {};
+        var container = {};
+
+        name = $(this).find('h2').html();
+
+    });
+
+}
+
+getInputDependencies = function(component){
+
+}
+
+
+
 // Called when someone adds a component
 createFieldBasedOnType = function(type){
     var input_field_names = getComponentInputOutputMap()[type.toLowerCase()][0];
@@ -286,7 +341,6 @@ emptyOptionTag = function(){
     return $('<option value=""></option>');
 }
 
-
 //------------- Callbacks -------------
 
 componentSelectCallback = function(select){
@@ -343,7 +397,34 @@ inputComponentChangedCallback = function(target){
 }
 
 saveGeneratorButtonCallback = function(){
+    alert("you clicked save");
+    var json_representation = harvestComponents();
+    var ajax_setitngs = {
+        url: '/generators/new',
+        type: 'POST',
+        data: json_representation,
+        success: function(){ ajaxSucceedCallback(this) },
+        error: function(){ ajaxFailedCallback(this) }
+    };
 
+    $.ajax(ajax_setitngs);
+}
+
+ajaxSucceedCallback = function(data){
+    if ( !data['errors'] ) {
+        showAlert( "#Winning", "Terrain Generator is now building your Fancy Thing!", BOOTSTRAP_SUCCESS_ALERT);
+    } else {
+        showAlert("Hmmmmm", "Looks like a few of those values got fudged up. Terrain Generator will still try and build your Fancy Thing...", BOOTSTRAP_INFO_ALERT);
+    }
+}
+
+ajaxFailedCallback = function(data){
+    console.log("Ajax error: " + data);
+    showAlert("Danger! Danger! Danger!", "Bleep blorp bloop, Terrain Generator isn't happy :\( . Sorry about that, how about trying again?", BOOTSTRAP_DANGER_ALERT);
+}
+
+deleteGeneratorButtonCallback = function(){
+    alert('Not implimented yet');
 }
 
 addComponentButtonCallback = function(){
