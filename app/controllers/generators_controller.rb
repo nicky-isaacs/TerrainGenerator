@@ -86,7 +86,7 @@ class GeneratorsController < ApplicationController
   # { type: 'mult',  }
   def handle_components
     require 'debugger'; debugger
-    @generator = Generator.new (params[:components].to_json)
+    @generator = Generator.new({ :generator_hash => params[:data].to_json, :user_id => current_user.user_id })
   end
 
   # Use callbacks to share common setup or constraints between actions.

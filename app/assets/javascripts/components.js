@@ -25,6 +25,10 @@ var colon_separator_class = 'colon_separator';
 var component_field_wrapper_class = "component_field_wrapper";
 var component_name_input_class = 'component_name';
 
+var requiredComponentTypes = [
+    'result'
+]
+
 
 var components_added = 0;
 
@@ -34,7 +38,29 @@ harvestComponents = function(){
     var user_components = $('.' + component_field_wrapper_class);
     var clean_params = convertToComponentsJSON(user_components);
     console.log("JSON component representation: " + clean_params);
-    return clean_params;
+    if ( hasRequiredFields(clean_params) ){
+        return clean_params;
+    } else{
+        showAlert("Whoops!", "Looks like you are missing some required inputs", BOOTSTRAP_DANGER_ALERT);
+    }
+}
+
+hasRequiredFields = function(json){
+    var has_everything = true;
+
+    var user_selected_types=[];
+    $(existingComponentNames()).each(function(index, value){
+        user_selected_types.push( json[value].type );
+    });
+
+    $(requiredComponentTypes).each(function(index, value){
+        if ( user_selected_types.indexOf(value) == -1 ){
+            has_everything = false;
+            return false;
+        }
+    });
+
+    return has_everything;
 }
 
 // Helper to turn HTML into json obj in format:
@@ -89,6 +115,7 @@ convertToComponentsJSON = function(divs){
     });
 
     console.log(data.toString());
+
     return data;
 }
 
@@ -108,7 +135,7 @@ verifyInputParameters = function(type, inputs){
 
 getInputDependencies = function(component){
     var fieldsets = $(component).children('fieldset');
-    var variable_fieldset = fieldsets[0];
+    var variable_fieldset = fieldsets[1];
     var div_wrappers = $(variable_fieldset).children('div.input_field_wrapper');
 
     var result = {};
@@ -438,6 +465,7 @@ inputComponentChangedCallback = function(target){
         options.push(option_tag);
     });
 
+    $(variable_selector).empty();
     appendToSelect($(variable_selector), options);
 }
 
@@ -445,10 +473,11 @@ saveGeneratorButtonCallback = function(){
     alert('you pressed save');
     var json_representation = harvestComponents();
     var ajax_settings = {
-        content: 'application/json',
+        dataType: "json",
+        contentType: 'application/json',
         url: '/generators.json',
         type: 'POST',
-        data: json_representation,
+        data:  JSON.stringify({ data: json_representation}),
         success: function(){ ajaxDidSucceedCallback(this) },
         error: function(){ ajaxDidFailCallback(this) }
     };
@@ -485,7 +514,7 @@ nameChangeInputCallback = function(input){
 
 attachCallbacks = function(){
     $('select.components').change(function(){ componentSelectCallback($(this)) });
-    $('button.genarator_save').click(saveGeneratorButtonCallback());
+    $('button.genarator_save').click(function(){ saveGeneratorButtonCallback() });
     $('button.component_add').click(addComponentButtonCallback);
     $('.' + component_name_input_class).change(function(){ nameChangeInputCallback($(this)) });
 }

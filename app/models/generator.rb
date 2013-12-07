@@ -5,6 +5,7 @@ class Generator < ActiveRecord::Base
 
   attr_accessible :generator_hash
   attr_accessor :generator_hash
+  belongs_to :user
 
   def obj_file
 
