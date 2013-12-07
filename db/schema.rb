@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131207231043) do
+ActiveRecord::Schema.define(version: 20131207232902) do
 
   create_table "components", force: true do |t|
     t.boolean  "lock"
@@ -23,8 +23,9 @@ ActiveRecord::Schema.define(version: 20131207231043) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "default",    default: "n"
+    t.string   "default",        default: "n"
     t.integer  "user_id"
+    t.string   "generator_hash"
   end
 
   create_table "users", force: true do |t|
