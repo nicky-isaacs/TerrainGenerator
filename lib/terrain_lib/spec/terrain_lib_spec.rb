@@ -13,9 +13,17 @@ describe TerrainLib::Component do
         c.sample({"x" => 0, "y" => 0})["x"].should eq(7)
     end
     
+    it "receives input from sampler properly" do
+        a = TerrainLib::Component.new({:type => "add", :inputs => {"x" => ["sampler", "x"], "a" => ["sampler", "y"]}})
+        a.sample({"x" => 3, "y" => 2})["x"].should eq(5)
+    end
+    
     it "generates a heightmap properly" do
-        a = TerrainLib::Component.new({:type => "add", :inputs => {"x" => ["sampler", "x"], a => ["sampler", "y"]}})
-        filepath = a.generate()
+        factor = TerrainLib::Component.new({:type => "value", :outputs => {"v" => 0.1}})
+        stretch = TerrainLib::Component.new({:type => "mult", :inputs => {"x" => ["sampler", "x"], "y" => ["sampler", "y"], "b" => [factor, "v"]}})
+        simplex = TerrainLib::Component.new({:type => "simplex", :inputs => {"x" => [stretch, "x"], "y" => [stretch, "y"]}})
+        result = TerrainLib::Component.new({:type => "result", :inputs => {"v" => [simplex, "v"]}})
+        filepath = result.generate()
     end
 end
 

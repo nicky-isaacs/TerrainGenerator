@@ -21,7 +21,8 @@ require 'perlin'
 module TerrainLib
     # converts metadata to Components, and then generates terrain from it.
     def generate(metadata)
-    
+        # find root of tree
+        
     end
 
   class Component
@@ -44,10 +45,9 @@ module TerrainLib
     end
     
     def reset()
-        @outputs = {}
-        @@sampler = nil
+        if @type != "value" then @outputs = {} end
         @inputs.each do |k,v|
-            if v != "sampler" then
+            if v.first != "sampler" then
                 v.first.reset()
             end
         end
@@ -74,12 +74,27 @@ module TerrainLib
 }
 =end
     def generate()
-      
       filename = Time.new.getutc.to_s + ".obj"
       File.open(filename, mode="w"){ |file|
         # TO WRITE: file.write(str)
         # NOTE: does not append \n
-        
+        for x in 0..200
+          for y in 0..200
+            # get the value at this position
+            hgt = self.sample({"x" => x, "y" => y})["z"]
+            self.reset()
+            file.write("v #{x.to_s} #{hgt.to_s} #{y.to_s}\n")
+          end
+        end
+        for x in 1..200
+          for y in 1...200
+            nrow = 201 * x
+            row = nrow - 201
+            curr = row + y
+            ncurr = nrow + y
+            file.write("f #{ncurr.to_s} #{(ncurr + 1).to_s} #{(curr + 1).to_s} #{curr.to_s}\n")
+          end
+        end
       }
       return filename
     end
@@ -93,10 +108,16 @@ module TerrainLib
       src = @inputs[name]
       if src == nil then return Float::NAN end
       if src.first == "sampler" then
-          return @@sampler[src[-1]]
+        return @@sampler[src[-1]]
+      else
+        # -1 indicates last element (have to remind myself not to "fix" this)
+        return src.first.output[src[-1]].to_f
       end
-      # -1 indicates last element (have to remind myself not to "fix" this)
-      return src.first.output[src[-1]]
+    end
+    
+    def result()
+      @outputs["z"] = invalue("v")
+      return @outputs
     end
 
     def value()
@@ -170,35 +191,34 @@ module TerrainLib
 
     def perlin()
         sd = invalue("sd")
-        if sd == Float.NAN then sd = 0 end
+        if sd.to_s == "NaN" then sd = 0 end
         sd = sd.abs
-        p = Perlin::Generator.new(sd, 1, 1, {:classic = true})
+        if sd < 1 then sd = sd + 1 end
+        p = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => true})
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
-        w = invalue("w")
-        if x == Float.NAN then x = 0 end
-        if y == Float.NAN then y = 0 end
-        if z == Float.NAN then z = 0 end
-        if w == Float.NAN then w = 0 end
-        @outputs["v"] = p[x, y, z, w]
+        puts("(#{x}, #{y}, #{z})\n")
+        if x.to_s == "NaN" then x = 98.1222 end
+        if y.to_s == "NaN" then y = 2877.211 end
+        if z.to_s == "NaN" then z = 12383.122 end
+        @outputs["v"] = p[x, y, z]
         return @outputs
     end
 
     def simplex()
         sd = invalue("sd")
-        if sd == Float.NAN then sd = 0 end
+        if sd.to_s == "NaN" then sd = 0 end
         sd = sd.abs
-        s = Perlin::Generator.new(sd, 1, 1, {:classic = false})
+        if sd < 1 then sd = sd + 1 end
+        s = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => false})
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
-        w = invalue("w")
-        if x == Float.NAN then x = 0 end
-        if y == Float.NAN then y = 0 end
-        if z == Float.NAN then z = 0 end
-        if w == Float.NAN then w = 0 end
-        @outputs["v"] = s[x, y, z, w]
+        if x.to_s == "NaN" then x = 98.1222 end
+        if y.to_s == "NaN" then y = 2877.211 end
+        if z.to_s == "NaN" then z = 12383.122 end
+        @outputs["v"] = s[x, y, z]
         return @outputs
     end
 
