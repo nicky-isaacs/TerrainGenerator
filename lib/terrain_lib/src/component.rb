@@ -1,7 +1,6 @@
-require 'json'
+require 'perlin'
 
 #types...
-#  result: forwards a single value "z"
 #  value: outputs constant value by name "v"
 #  mult: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
 #  div: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
@@ -20,100 +19,124 @@ require 'json'
 # generates from this root component, with specified dimensions and resolution
 
 module TerrainLib
-  class Component
-    attr_accessor :inputs
-
-    class << self
-
-      def deserialize(json_string)
-        args = JSON.parse(json_string).symbolize_keys
-        inflated_outputs=[]
-        inflated_inputs=[]
-
-        args[:outputs].each do |o|
-          inflated_outputs << deserialize(o)
+=begin
+{
+    <component_name:string> => 
+    {
+        "type" => <type_name:string>,
+        
+        # not necessary if type is "value"
+        "inputs" =>
+        {
+            "input_names" => [<source_name:string>, <output_name:string>]
+        },
+        
+        # not necessary unless type is "value"
+        "outputs" =>
+        {
+            "output_names" => <output_value:number>
+        },
+    }
+    
+    # mandatory root node
+    "result" =>
+    {
+        "type" => "result"
+        "inputs" =>
+        {
+            "v" => [<source_name:string>, <output_name:string>]
+        }
+    }
+}
+=end
+    # converts metadata to Components, and then generates terrain from it.
+    def convert(metadata, node = "result", prev = {})
+        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
+        prev[node] = newnode
+        metadata[node]["inputs"].each do |k,v|
+            newnode[:inputs][k] = [convert(metadata, v.first, prev), v[-1]]
         end
-
-        args[:inputs].each do |i|
-          inflated_inputs << deserialize(i)
-        end
-
-        args[:inputs] = inflated_inputs
-        args[:outputs] = inflated_outputs
-
-        self.new(args)
-      end
-
+        return Terrain::Component.new(newnode)
     end
 
+    def generate(metadata)
+        return convert(metadata).generate()
+    end
+
+  class Component
     def initialize( params={} )
       @outputs = params[:outputs]
+      if @outputs == nil then @outputs = {} end
       @inputs = params[:inputs]
-      @lock = true unless( @lock = params[:lock] )
+      if @inputs == nil then @inputs = {} end
       @type = params[:type]
-      @name = params[:name]
-
-      if @type == "value" then
-        @output
-        @lock = true
-      end
+      if @type == nil then @type = "value" end
     end
 
-    def to_json
-      json_outputs = []
-      json_inputs = []
-
-      inputs.each{ |i| json_inputs << i.to_json }
-      outputs.each{ |o| json_outputs << o.to_json }
-
-      {
-          :inputs => json_inputs,
-          :outputs => json_outputs,
-          :lock => lock,
-          :type => type
-      }.to_json
+    def sample(coord)
+        @@sampler = coord
+        result = self.output
+        reset()
+        return result
     end
-
-    def generate(filename, dim, res)
-      return self.output["z"]
-    end
-
-    def output
-      if @outputs != nil or @lock then return @outputs end
-      return self.send(@type)
-    end
-
-    def output=(val)
-      if val == nil then return end
-      if not @lock then
-        @outputs = val
-        if @type == "value" then
-          @lock = true
+    
+    def reset()
+        if @type != "value" then @outputs = {} end
+        @inputs.each do |k,v|
+            if v.first != "sampler" then
+                v.first.reset()
+            end
         end
-      end
+    end
+    
+    def generate()
+      filename = Time.new.getutc.to_s + ".obj"
+      File.open(filename, mode="w"){ |file|
+        # TO WRITE: file.write(str)
+        # NOTE: does not append \n
+        for x in 0..200
+          for y in 0..200
+            # get the value at this position
+            hgt = self.sample({"x" => x, "y" => y})["z"]
+            self.reset()
+            file.write("v #{x.to_s} #{hgt.to_s} #{y.to_s}\n")
+          end
+        end
+        for x in 1..200
+          for y in 1...200
+            nrow = 201 * x
+            row = nrow - 201
+            curr = row + y
+            ncurr = nrow + y
+            file.write("f #{ncurr.to_s} #{(ncurr + 1).to_s} #{(curr + 1).to_s} #{curr.to_s}\n")
+          end
+        end
+      }
+      return filename
+    end
+
+    def output()
+      if @outputs.keys.size > 0 then return @outputs end
+      return self.send(@type)
     end
 
     def invalue(name)
       src = @inputs[name]
-      # -1 indicates last element (have to remind myself not to "fix" this)
-      return src.first.output[src[-1]]
+      if src == nil then return Float::NAN end
+      if src.first == "sampler" then
+        return @@sampler[src[-1]]
+      else
+        # -1 indicates last element (have to remind myself not to "fix" this)
+        return src.first.output[src[-1]].to_f
+      end
     end
-
-    def reset()
-      if @type != "value" then @outputs = nil end
-    end
-
-# Component getvalue methods
-    def pipe()
-      @inputs.each{ |name, source|
-        @outputs = Hash.new()
-        @outputs[name] = invalue(name)
-      }
+    
+    def result()
+      @outputs["z"] = invalue("v")
       return @outputs
     end
 
     def value()
-      @lock = true
       return @outputs
     end
 
@@ -174,7 +197,7 @@ module TerrainLib
     end
 
     def random()
-      r = Random.new(invalue("sd") + 1233)
+      r = Random.new(invalue("sd"))
       @outputs["x"] = invalue("lo") + r.rand(invalue("hi"))
       @outputs["y"] = invalue("lo") + r.rand(invalue("hi"))
       @outputs["z"] = invalue("lo") + r.rand(invalue("hi"))
@@ -183,26 +206,51 @@ module TerrainLib
     end
 
     def perlin()
-
+        sd = invalue("sd")
+        if sd.to_s == "NaN" then sd = 0 end
+        sd = sd.abs
+        if sd < 1 then sd = sd + 1 end
+        p = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => true})
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        puts("(#{x}, #{y}, #{z})\n")
+        if x.to_s == "NaN" then x = 98.1222 end
+        if y.to_s == "NaN" then y = 2877.211 end
+        if z.to_s == "NaN" then z = 12383.122 end
+        @outputs["v"] = p[x, y, z]
+        return @outputs
     end
 
     def simplex()
-
+        sd = invalue("sd")
+        if sd.to_s == "NaN" then sd = 0 end
+        sd = sd.abs
+        if sd < 1 then sd = sd + 1 end
+        s = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => false})
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        if x.to_s == "NaN" then x = 98.1222 end
+        if y.to_s == "NaN" then y = 2877.211 end
+        if z.to_s == "NaN" then z = 12383.122 end
+        @outputs["v"] = s[x, y, z]
+        return @outputs
     end
 
     def mag()
       @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                    invalue("y") * invalue("y") +
-                                    invalue("z") * invalue("z") +
-                                    invalue("w") * invalue("w"))
+                                invalue("y") * invalue("y") +
+                                invalue("z") * invalue("z") +
+                                invalue("w") * invalue("w"))
       return @outputs
     end
 
     def norm()
       @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                    invalue("y") * invalue("y") +
-                                    invalue("z") * invalue("z") +
-                                    invalue("w") * invalue("w"))
+                                invalue("y") * invalue("y") +
+                                invalue("z") * invalue("z") +
+                                invalue("w") * invalue("w"))
       @outputs["x"] = invalue("x") / @outputs["m"]
       @outputs["y"] = invalue("x") / @outputs["m"]
       @outputs["z"] = invalue("x") / @outputs["m"]
@@ -223,3 +271,4 @@ module TerrainLib
     end
   end
 end
+
