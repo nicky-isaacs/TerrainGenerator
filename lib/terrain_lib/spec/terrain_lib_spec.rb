@@ -29,6 +29,29 @@ end
 
 describe TerrainLib do
     it "should properly generate a heightmap given user info" do
-    
+        metadata =
+        {
+            "factor" =>
+            {
+                "type" => "value",
+                "outputs" => {"v" => 0.1}
+            },
+            "stretch" =>
+            {
+                "type" => "mult",
+                "inputs" => {"x" => ["sampler", "x"], "y" => ["sampler", "y"], "b" => ["factor", "v"]}
+            },
+            "simplex" =>
+            {
+                "type" => "simplex",
+                "inputs" => {"x" => ["stretch", "x"], "y" => ["stretch", "y"]}
+            },
+            "result" =>
+            {
+                "type" => "result",
+                "inputs" => {"v" => ["simplex", "v"]},
+            }
+        }
+        filepath = TerrainLib::generate(metadata)
     end
 end

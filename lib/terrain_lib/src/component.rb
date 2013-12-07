@@ -19,40 +19,6 @@ require 'perlin'
 # generates from this root component, with specified dimensions and resolution
 
 module TerrainLib
-    # converts metadata to Components, and then generates terrain from it.
-    def generate(metadata)
-        # find root of tree
-        
-    end
-
-  class Component
-    def initialize( params={} )
-      @outputs = params[:outputs]
-      if @outputs == nil then @outputs = {} end
-      @inputs = params[:inputs]
-      if @inputs == nil then @inputs = {} end
-      @type = params[:type]
-      if @type == nil then @type = "value" end
-      @name = params[:name]
-      if @name == nil then @name = "unnamed" end
-    end
-
-    def sample(coord)
-        @@sampler = coord
-        result = self.output
-        reset()
-        return result
-    end
-    
-    def reset()
-        if @type != "value" then @outputs = {} end
-        @inputs.each do |k,v|
-            if v.first != "sampler" then
-                v.first.reset()
-            end
-        end
-    end
-    
 =begin
 {
     <component_name:string> => 
@@ -71,8 +37,58 @@ module TerrainLib
             "output_names" => <output_value:number>
         },
     }
+    
+    # mandatory root node
+    "result" =>
+    {
+        "type" => "result"
+        "inputs" =>
+        {
+            "v" => [<source_name:string>, <output_name:string>]
+        }
+    }
 }
 =end
+    # converts metadata to Components, and then generates terrain from it.
+    def convert(metadata, node = "result", prev = {})
+        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
+        prev[node] = newnode
+        metadata[node]["inputs"].each do |k,v|
+            newnode[:inputs][k] = [convert(metadata, v.first, prev), v[-1]]
+        end
+        return Terrain::Component.new(newnode)
+    end
+
+    def generate(metadata)
+        return convert(metadata).generate()
+    end
+
+  class Component
+    def initialize( params={} )
+      @outputs = params[:outputs]
+      if @outputs == nil then @outputs = {} end
+      @inputs = params[:inputs]
+      if @inputs == nil then @inputs = {} end
+      @type = params[:type]
+      if @type == nil then @type = "value" end
+    end
+
+    def sample(coord)
+        @@sampler = coord
+        result = self.output
+        reset()
+        return result
+    end
+    
+    def reset()
+        if @type != "value" then @outputs = {} end
+        @inputs.each do |k,v|
+            if v.first != "sampler" then
+                v.first.reset()
+            end
+        end
+    end
+    
     def generate()
       filename = Time.new.getutc.to_s + ".obj"
       File.open(filename, mode="w"){ |file|
