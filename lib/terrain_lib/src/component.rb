@@ -95,7 +95,7 @@ module TerrainLib
         return self.convert(metadata).generate()
     end
     
-    def self.hashIsValid?(hash)
+    def self.isValidHash?(hash)
         if hash.has_key?("result") and hash["result"].has_key("type") and hash["result"]["type"] == "result" then return true
         else return false end
     end

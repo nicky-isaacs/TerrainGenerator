@@ -24,6 +24,7 @@ describe TerrainLib::Component do
         simplex = TerrainLib::Component.new({:type => "simplex", :inputs => {"x" => [stretch, "x"], "y" => [stretch, "y"]}})
         result = TerrainLib::Component.new({:type => "result", :inputs => {"v" => [simplex, "v"]}})
         filepath = result.generate()
+        File::delete(filepath)
     end
     it "should properly generate a heightmap given user info" do
         metadata =
@@ -50,5 +51,6 @@ describe TerrainLib::Component do
             }
         }
         filepath = TerrainLib::Component::generate(metadata)
+        File::delete(filepath)
     end
 end
