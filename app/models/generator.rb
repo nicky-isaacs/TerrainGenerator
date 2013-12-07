@@ -5,9 +5,19 @@ class Generator < ActiveRecord::Base
 
   attr_accessible :generator_hash
   attr_accessor :generator_hash
+  belongs_to :user
 
   def obj_file
 
+  end
+  
+  def make_default
+    self.default = 'y'
+  end
+  
+  def make_default!
+    self.default = 'y'
+    save!
   end
 
   private

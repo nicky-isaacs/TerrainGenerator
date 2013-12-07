@@ -1,5 +1,5 @@
 class GeneratorsController < ApplicationController
-  before_action :set_generator, only: [:show, :edit, :update, :destroy]
+  #before_action :set_generator, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   before_action :setup_view_variables, only: [:new, :show, :index]
   before_action :expose_js_variables
@@ -36,7 +36,7 @@ class GeneratorsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @generator }
       else
         format.html { render action: 'new' }
-        format.json { render json: @generator.errors, status: :unprocessable_entity }
+        format.json { render json: @generator.errors, status: :unprocessable_entity, errors: 'Could Not Create Generator' }
       end
     end
   end
@@ -85,7 +85,7 @@ class GeneratorsController < ApplicationController
 
   # { type: 'mult',  }
   def handle_components
-    @generator = Generator.new (params[:components].to_json)
+    @generator = Generator.new({ :generator_hash => params[:data].to_json, :user_id => current_user.user_id })
   end
 
   # Use callbacks to share common setup or constraints between actions.
