@@ -3,8 +3,9 @@ class Generator < ActiveRecord::Base
   # For now we will assume that this takes a root node and an array
   # of other components
 
+	self.table_name = "generators"
+
   attr_accessible :generator_hash
-  attr_accessor :generator_hash
   belongs_to :user
 
   def obj_file
