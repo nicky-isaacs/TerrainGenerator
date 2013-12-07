@@ -49,21 +49,11 @@ module TerrainLib
     }
 }
 =end
-    # converts metadata to Components, and then generates terrain from it.
-    def convert(metadata, node = "result", prev = {})
-        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
-        prev[node] = newnode
-        metadata[node]["inputs"].each do |k,v|
-            newnode[:inputs][k] = [convert(metadata, v.first, prev), v[-1]]
-        end
-        return Terrain::Component.new(newnode)
-    end
-
-    def generate(metadata)
-        return convert(metadata).generate()
-    end
 
   class Component
+    class << self
+      
+  
     def initialize( params={} )
       @outputs = params[:outputs]
       if @outputs == nil then @outputs = {} end
@@ -71,6 +61,28 @@ module TerrainLib
       if @inputs == nil then @inputs = {} end
       @type = params[:type]
       if @type == nil then @type = "value" end
+    end
+    
+    # converts metadata to Components, and then generates terrain from it.
+    def self.convert(metadata, node = "result", prev = {})
+        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
+        prev[node] = newnode
+        metadata[node]["inputs"].each do |k,v|
+            newnode[:inputs][k] = [self.convert(metadata, v.first, prev), v[-1]]
+        end
+        return self.new(newnode)
+    end
+
+    def self.generate(metadata)
+        return self.convert(metadata).generate()
+    end
+    
+    def self.hashIsValid?(hash)
+        if hash["result"]["type"] != "result" then
+            return false
+        else
+            return true
+        end
     end
 
     def sample(coord)

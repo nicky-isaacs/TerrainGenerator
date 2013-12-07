@@ -25,9 +25,6 @@ describe TerrainLib::Component do
         result = TerrainLib::Component.new({:type => "result", :inputs => {"v" => [simplex, "v"]}})
         filepath = result.generate()
     end
-end
-
-describe TerrainLib do
     it "should properly generate a heightmap given user info" do
         metadata =
         {
@@ -52,6 +49,6 @@ describe TerrainLib do
                 "inputs" => {"v" => ["simplex", "v"]},
             }
         }
-        filepath = TerrainLib::generate(metadata)
+        filepath = TerrainLib::Component::generate(metadata)
     end
 end
