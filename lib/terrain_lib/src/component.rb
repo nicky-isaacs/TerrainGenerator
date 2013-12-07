@@ -51,6 +51,8 @@ module TerrainLib
 =end
 
   class Component
+    attr_accessor :inputs
+  
     def initialize( params={} )
       @outputs = params[:outputs]
       if @outputs == nil then @outputs = {} end
@@ -60,27 +62,33 @@ module TerrainLib
       if @type == nil then @type = "value" end
     end
     
-    def self.decode(metadata, node = "result", prev = {"result" => "result"})
-        if prev.has_key?(node) then return prev[node] end
-        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
-        if metadata[node].has_key?("inputs") then
-            metadata[node]["inputs"].each do |k,v|
-                newnode[:inputs][k] = [self.decode(metadata, v.first, prev).first, v[-1]]
+    def self.convert(metadata)
+        components = {}
+        metadata.each do |k,v|
+            if v.has_key?("inputs") then
+                v[:inputs] = v["inputs"]
+                v["inputs"] = nil
+            end
+            if v.has_key?("outputs") then
+                v[:outputs] = v["outputs"]
+                v["outputs"] = nil
+            end
+            if v.has_key?("type") then
+                v[:type] = v["type"]
+                v["type"] = nil
+            end
+            components[k] = self.new(v)
+        end
+        
+        components.each do |k,v|
+            v.inputs().each do |i,j|
+                if j.first != "sampler" then
+                    j[0] = components[j.first]
+                end
             end
         end
-        return [newnode, prev]
-    end
-    # converts metadata to Components, and then generates terrain from it.
-    def self.convert(metadata, node = "result", prev = {"sampler" => "sampler"}, done = {"sampler" => "sampler"})
-        if prev.has_key?(node) then return prev[node] end
-        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
-        prev[node] = newnode
-        if metadata[node].has_key?("inputs") then
-            metadata[node]["inputs"].each do |k,v|
-                newnode[:inputs][k] = [self.convert(metadata, v.first, prev), v[-1]]
-            end
-        end
-        return self.new(newnode)
+        
+        return components["result"]
     end
 
     def self.generate(metadata)
@@ -88,11 +96,8 @@ module TerrainLib
     end
     
     def self.hashIsValid?(hash)
-        if hash["result"]["type"] != "result" then
-            return false
-        else
-            return true
-        end
+        if hash.has_key?("result") and hash["result"].has_key("type") and hash["result"]["type"] == "result" then return true
+        else return false end
     end
 
     def sample(coord)

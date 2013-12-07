@@ -31,7 +31,7 @@ describe TerrainLib::Component do
             "factor" =>
             {
                 "type" => "value",
-                "outputs" => {"v" => 0.1}
+                "outputs" => {"v" => 0.17}
             },
             "stretch" =>
             {
