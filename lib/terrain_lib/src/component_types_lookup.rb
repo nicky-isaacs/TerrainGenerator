@@ -23,13 +23,12 @@ module TerrainLib
             'log' => [%w(x y z w b), %w(x y z w)],
             'random' => [%w(lo hi sd), %w(x y z w)],
             'perlin' => [%w(x y z sd), ['v']],
-            'simplex' => [%w(x y z sd), %w(v)],
+            'simplex' => [%w(x y z sd), ['v']],
             'mag' => [%w(x y z w), ['m']],
             'norm' => [%w(x y z w), %w(x y z w)],
             'resize' => [%w(x y z w m), %w(x y z w)]
         }
       end
-
     end
   end
 end
