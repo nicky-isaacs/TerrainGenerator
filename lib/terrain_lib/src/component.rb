@@ -51,9 +51,6 @@ module TerrainLib
 =end
 
   class Component
-    class << self
-      
-  
     def initialize( params={} )
       @outputs = params[:outputs]
       if @outputs == nil then @outputs = {} end
@@ -63,12 +60,25 @@ module TerrainLib
       if @type == nil then @type = "value" end
     end
     
+    def self.decode(metadata, node = "result", prev = {"result" => "result"})
+        if prev.has_key?(node) then return prev[node] end
+        newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
+        if metadata[node].has_key?("inputs") then
+            metadata[node]["inputs"].each do |k,v|
+                newnode[:inputs][k] = [self.decode(metadata, v.first, prev).first, v[-1]]
+            end
+        end
+        return [newnode, prev]
+    end
     # converts metadata to Components, and then generates terrain from it.
-    def self.convert(metadata, node = "result", prev = {})
+    def self.convert(metadata, node = "result", prev = {"sampler" => "sampler"}, done = {"sampler" => "sampler"})
+        if prev.has_key?(node) then return prev[node] end
         newnode = {:type => metadata[node]["type"], :outputs => metadata[node]["outputs"], :inputs => {}}
         prev[node] = newnode
-        metadata[node]["inputs"].each do |k,v|
-            newnode[:inputs][k] = [self.convert(metadata, v.first, prev), v[-1]]
+        if metadata[node].has_key?("inputs") then
+            metadata[node]["inputs"].each do |k,v|
+                newnode[:inputs][k] = [self.convert(metadata, v.first, prev), v[-1]]
+            end
         end
         return self.new(newnode)
     end
