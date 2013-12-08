@@ -42,7 +42,7 @@ class AddFirstDefaultGenerator < ActiveRecord::Migration
     "type":"simplex"
   }
 }'
-    a = Generator.new(hash)
+    a = Generator.new( generator_hash: hash.to_json )
     a.make_default!
   end
 end
