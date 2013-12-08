@@ -200,101 +200,165 @@ module TerrainLib
     end
 
     def exp()
-      @outputs["x"] = invalue("x") ** invalue("e")
-      @outputs["y"] = invalue("y") ** invalue("e")
-      @outputs["z"] = invalue("z") ** invalue("e")
-      @outputs["w"] = invalue("w") ** invalue("e")
+      e = invalue("e")
+      @outputs["x"] = invalue("x") ** e
+      @outputs["y"] = invalue("y") ** e
+      @outputs["z"] = invalue("z") ** e
+      @outputs["w"] = invalue("w") ** e
       return @outputs
     end
 
     def sqrt()
-      @outputs["x"] = Math.sqrt(invalue("x"))
-      @outputs["y"] = Math.sqrt(invalue("y"))
-      @outputs["z"] = Math.sqrt(invalue("z"))
-      @outputs["w"] = Math.sqrt(invalue("w"))
+      x = invalue("x")
+      y = invalue("y")
+      z = invalue("z")
+      w = invalue("w")
+      @outputs["x"] = x / Math.sqrt(x.abs)
+      @outputs["y"] = y / Math.sqrt(y.abs)
+      @outputs["z"] = z / Math.sqrt(z.abs)
+      @outputs["w"] = w / Math.sqrt(w.abs)
       return @outputs
     end
 
     def log()
-      @outputs["x"] = Math.log(invalue("x"), invalue("b"))
-      @outputs["y"] = Math.log(invalue("y"), invalue("b"))
-      @outputs["z"] = Math.log(invalue("z"), invalue("b"))
-      @outputs["w"] = Math.log(invalue("w"), invalue("b"))
+      b = invalue("b")
+      @outputs["x"] = Math.log(invalue("x"), b)
+      @outputs["y"] = Math.log(invalue("y"), b)
+      @outputs["z"] = Math.log(invalue("z"), b)
+      @outputs["w"] = Math.log(invalue("w"), b)
       return @outputs
     end
 
     def random()
       r = Random.new(invalue("sd"))
-      @outputs["x"] = invalue("lo") + r.rand(invalue("hi"))
-      @outputs["y"] = invalue("lo") + r.rand(invalue("hi"))
-      @outputs["z"] = invalue("lo") + r.rand(invalue("hi"))
-      @outputs["w"] = invalue("lo") + r.rand(invalue("hi"))
+      lo = invalue("lo")
+      hi = invalue("hi")
+      @outputs["x"] = lo + r.rand(hi)
+      @outputs["y"] = lo + r.rand(hi)
+      @outputs["z"] = lo + r.rand(hi)
+      @outputs["w"] = lo + r.rand(hi)
       return @outputs
     end
 
     def perlin()
         sd = invalue("sd")
-        if sd.to_s == "NaN" then sd = 0 end
+        if sd.nan? then sd = 0 end
         sd = sd.abs
         if sd < 1 then sd = sd + 1 end
         p = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => true})
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
-        puts("(#{x}, #{y}, #{z})\n")
-        if x.to_s == "NaN" then x = 98.1222 end
-        if y.to_s == "NaN" then y = 2877.211 end
-        if z.to_s == "NaN" then z = 12383.122 end
+        if x.nan? then x = 98.1222 end
+        if y.nan? then y = 2877.211 end
+        if z.nan? then z = 12383.122 end
         @outputs["v"] = p[x, y, z]
         return @outputs
     end
 
     def simplex()
         sd = invalue("sd")
-        if sd.to_s == "NaN" then sd = 0 end
+        if sd.nan? then sd = 0 end
         sd = sd.abs
         if sd < 1 then sd = sd + 1 end
         s = Perlin::Generator.new(sd.to_int, 1, 1, {:classic => false})
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
-        if x.to_s == "NaN" then x = 98.1222 end
-        if y.to_s == "NaN" then y = 2877.211 end
-        if z.to_s == "NaN" then z = 12383.122 end
+        if x.nan? then x = 98.1222 end
+        if y.nan? then y = 2877.211 end
+        if z.nan? then z = 12383.122 end
         @outputs["v"] = s[x, y, z]
         return @outputs
     end
 
     def mag()
-      @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                invalue("y") * invalue("y") +
-                                invalue("z") * invalue("z") +
-                                invalue("w") * invalue("w"))
+      x = invalue("x")
+      if x.nan? then x = 0 end
+      y = invalue("y")
+      if y.nan? then y = 0 end
+      z = invalue("z")
+      if z.nan? then z = 0 end
+      w = invalue("w")
+      if w.nan? then w = 0 end
+      @outputs["m"] = Math.sqrt(x * x +
+                                y * y +
+                                z * z +
+                                w * w)
       return @outputs
     end
 
     def norm()
-      @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                invalue("y") * invalue("y") +
-                                invalue("z") * invalue("z") +
-                                invalue("w") * invalue("w"))
-      @outputs["x"] = invalue("x") / @outputs["m"]
-      @outputs["y"] = invalue("x") / @outputs["m"]
-      @outputs["z"] = invalue("x") / @outputs["m"]
-      @outputs["w"] = invalue("x") / @outputs["m"]
+      x = invalue("x")
+      if x.nan? then x = 0 end
+      y = invalue("y")
+      if y.nan? then y = 0 end
+      z = invalue("z")
+      if z.nan? then z = 0 end
+      w = invalue("w")
+      if w.nan? then w = 0 end
+      @outputs["m"] = Math.sqrt(x * x +
+                                y * y +
+                                z * z +
+                                w * w)
+      @outputs["x"] = x / @outputs["m"]
+      @outputs["y"] = y / @outputs["m"]
+      @outputs["z"] = z / @outputs["m"]
+      @outputs["w"] = w / @outputs["m"]
       return @outputs
     end
 
     def resize()
-      @outputs["m"] = Math.sqrt(invalue("x") * invalue("x") +
-                                    invalue("y") * invalue("y") +
-                                    invalue("z") * invalue("z") +
-                                    invalue("w") * invalue("w"))
-      @outputs["x"] = invalue("x") * invalue("m") / @outputs["m"]
-      @outputs["y"] = invalue("x") * invalue("m") / @outputs["m"]
-      @outputs["z"] = invalue("x") * invalue("m") / @outputs["m"]
-      @outputs["w"] = invalue("x") * invalue("m") / @outputs["m"]
+      x = invalue("x")
+      if x.nan? then x = 0 end
+      y = invalue("y")
+      if y.nan? then y = 0 end
+      z = invalue("z")
+      if z.nan? then z = 0 end
+      w = invalue("w")
+      if w.nan? then w = 0 end
+      m = invalue("m")
+      if m.nan? then m = 1 end
+      @outputs["m"] = Math.sqrt((x * x) +
+                                (y * y) +
+                                (z * z) +
+                                (w * w))
+      @outputs["x"] = x * m / @outputs["m"]
+      @outputs["y"] = y * m / @outputs["m"]
+      @outputs["z"] = z * m / @outputs["m"]
+      @outputs["w"] = w * m / @outputs["m"]
       return @outputs
+    end
+    
+    def min()
+        @outputs["x"] = Math.min(invalue("x"), invalue("a"))
+        @outputs["y"] = Math.min(invalue("y"), invalue("b"))
+        @outputs["z"] = Math.min(invalue("z"), invalue("c"))
+        @outputs["w"] = Math.min(invalue("w"), invalue("d"))
+        return @outputs
+    end
+    
+    def max()
+        @outputs["x"] = Math.max(invalue("x"), invalue("a"))
+        @outputs["y"] = Math.max(invalue("y"), invalue("b"))
+        @outputs["z"] = Math.max(invalue("z"), invalue("c"))
+        @outputs["w"] = Math.max(invalue("w"), invalue("d"))
+        return @outputs
+    end
+    
+    def cmp()
+        if invalue("d") < 0 then
+            @outputs["x"] = invalue("a")
+            @outputs["y"] = invalue("b")
+            @outputs["z"] = invalue("c")
+            @outputs["w"] = invalue("d")
+        else
+            @outputs["x"] = invalue("x")
+            @outputs["y"] = invalue("y")
+            @outputs["z"] = invalue("z")
+            @outputs["w"] = invalue("w")
+        end
+        return @outputs
     end
   end
 end

@@ -25,8 +25,11 @@ module TerrainLib
             'perlin' => [%w(x y z sd), ['v']],
             'simplex' => [%w(x y z sd), ['v']],
             'mag' => [%w(x y z w), ['m']],
-            'norm' => [%w(x y z w), %w(x y z w)],
-            'resize' => [%w(x y z w m), %w(x y z w)]
+            'norm' => [%w(x y z w), %w(x y z w m)],
+            'resize' => [%w(x y z w m), %w(x y z w m)],
+            'min' => [%w(x y z w a b c d), %w(x y z w)],
+            'max' => [%w(x y z w a b c d), %w(x y z w)],
+            'cmp' => [%w(df x y z w a b c d), %w(x y z w)]
         }
       end
     end
