@@ -1,5 +1,4 @@
 TerainGeneration::Application.routes.draw do
-  resources :generators
 
   devise_for :users
   
@@ -7,11 +6,13 @@ TerainGeneration::Application.routes.draw do
 
 	get '/user/:id' => 'users#show'
 
-  get '/generator/preview' => 'generators#preview'
+  get '/generators/preview' => 'generators#preview'
 
-  get '/generator/new' => 'generators#new'
+  get '/generators/new' => 'generators#new'
 
-  post '/generator' => 'generator#create'
+  post '/generators' => 'generators#create'
+
+  resources :generators
 
 	# The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

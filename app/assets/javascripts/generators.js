@@ -35,7 +35,11 @@ function init() {
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
 
-        console.log( item, loaded, total );
+        try{
+            console.log( item, loaded, total );
+        } catch(err){
+            console.log("Error logging in THREE.js: " + err.toString() );
+        }
 
     };
 

@@ -1,4 +1,5 @@
 require File.join( File.dirname(__FILE__), 'spec_helper')
+require 'json'
 
 describe TerrainLib::Component do
     it "returns correct output from value types" do
@@ -24,31 +25,10 @@ describe TerrainLib::Component do
         simplex = TerrainLib::Component.new({:type => "simplex", :inputs => {"x" => [stretch, "x"], "y" => [stretch, "y"]}})
         result = TerrainLib::Component.new({:type => "result", :inputs => {"v" => [simplex, "v"]}})
         filepath = result.generate()
+        File::delete(filepath)
     end
     it "should properly generate a heightmap given user info" do
-        metadata =
-        {
-            "factor" =>
-            {
-                "type" => "value",
-                "outputs" => {"v" => 0.17}
-            },
-            "stretch" =>
-            {
-                "type" => "mult",
-                "inputs" => {"x" => ["sampler", "x"], "y" => ["sampler", "y"], "b" => ["factor", "v"]}
-            },
-            "simplex" =>
-            {
-                "type" => "simplex",
-                "inputs" => {"x" => ["stretch", "x"], "y" => ["stretch", "y"]}
-            },
-            "result" =>
-            {
-                "type" => "result",
-                "inputs" => {"v" => ["simplex", "v"]},
-            }
-        }
+        metadata = JSON.parse(File.open("lib/terrain_lib/spec/test.gen").read)
         filepath = TerrainLib::Component::generate(metadata)
     end
 end

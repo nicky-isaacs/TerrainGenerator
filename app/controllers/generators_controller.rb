@@ -14,7 +14,7 @@ class GeneratorsController < ApplicationController
   # GET /generators/1
   # GET /generators/1.json
   def show
-  	@generator = Generator.where(id: id)
+  	@generator = Generator.where(id: params[:id] )
 	end
 
   # GET /generators/new
@@ -75,7 +75,7 @@ class GeneratorsController < ApplicationController
     elsif !@obj_path
       flash[:alert] = "Could not locate file to preview"
     end
-    #render :layout => false
+    render :layout => false
   end
 
   private
