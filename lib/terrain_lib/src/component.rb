@@ -331,18 +331,50 @@ module TerrainLib
     end
     
     def min()
-        @outputs["x"] = Math.min(invalue("x"), invalue("a"))
-        @outputs["y"] = Math.min(invalue("y"), invalue("b"))
-        @outputs["z"] = Math.min(invalue("z"), invalue("c"))
-        @outputs["w"] = Math.min(invalue("w"), invalue("d"))
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        w = invalue("w")
+        a = invalue("a")
+        b = invalue("b")
+        c = invalue("c")
+        d = invalue("d")
+        if x.nan? then x = 0 end
+        if y.nan? then y = 0 end
+        if z.nan? then z = 0 end
+        if w.nan? then w = 0 end
+        if a.nan? then a = 0 end
+        if b.nan? then b = 0 end
+        if c.nan? then c = 0 end
+        if d.nan? then d = 0 end
+        @outputs["x"] = [x, a].min
+        @outputs["y"] = [y, b].min
+        @outputs["z"] = [z, c].min
+        @outputs["w"] = [w, d].min
         return @outputs
     end
     
     def max()
-        @outputs["x"] = Math.max(invalue("x"), invalue("a"))
-        @outputs["y"] = Math.max(invalue("y"), invalue("b"))
-        @outputs["z"] = Math.max(invalue("z"), invalue("c"))
-        @outputs["w"] = Math.max(invalue("w"), invalue("d"))
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        w = invalue("w")
+        a = invalue("a")
+        b = invalue("b")
+        c = invalue("c")
+        d = invalue("d")
+        if x.nan? then x = 0 end
+        if y.nan? then y = 0 end
+        if z.nan? then z = 0 end
+        if w.nan? then w = 0 end
+        if a.nan? then a = 0 end
+        if b.nan? then b = 0 end
+        if c.nan? then c = 0 end
+        if d.nan? then d = 0 end
+        @outputs["x"] = [x, a].max
+        @outputs["y"] = [y, b].max
+        @outputs["z"] = [z, c].max
+        @outputs["w"] = [w, d].max
         return @outputs
     end
     
