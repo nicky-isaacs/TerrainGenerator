@@ -38,14 +38,14 @@ harvestComponents = function(){
     var user_components = $('.' + component_field_wrapper_class);
     var clean_params = convertToComponentsJSON(user_components);
     console.log("JSON component representation: " + clean_params);
-    if ( hasRequiredFields(clean_params) ){
+    if ( checkDataIntegrity(clean_params) ){
         return clean_params;
     } else{
         showAlert("Whoops!", "Looks like you are missing some required inputs", BOOTSTRAP_DANGER_ALERT);
     }
 }
 
-hasRequiredFields = function(json){
+checkDataIntegrity = function(json){
     var has_everything = true;
 
     var user_selected_types=[];
@@ -56,6 +56,21 @@ hasRequiredFields = function(json){
     $(requiredComponentTypes).each(function(index, value){
         if ( user_selected_types.indexOf(value) == -1 ){
             has_everything = false;
+            console.log('Failed test, was missing required component: ' + value);
+            return false;
+        }
+    });
+
+
+    if (!has_everything){ return has_everything; }
+
+    $(Object.keys(json)).each(function(index, key){
+        var type = json[key].type;
+
+        if ( isResult(type) && isResult(key) ){
+            console.log("Type: " + type + " Key: " + key);
+            has_everything = false;
+            showAlert("Error: ", "Your result component must be named \'result\'. It's dumb, I know, sorry.", BOOTSTRAP_DANGER_ALERT);
             return false;
         }
     });
@@ -115,12 +130,15 @@ convertToComponentsJSON = function(divs){
     });
 
     console.log(data.toString());
-
     return data;
 }
 
+isResult = function(type){
+    return ('result' == type);
+}
+
 isValue = function(type){
-    return (type == 'value');
+    return ('value' == type);
 }
 
 verifyInputParameters = function(type, inputs){
@@ -332,6 +350,10 @@ cleanInputs = function(required, passed){
     return passed;
 }
 
+hideComponentModal = function(){
+    $('#myModal').modal('hide');
+}
+
 getComponentTypes = function(){
     return gon.component_types;
 }
@@ -451,10 +473,10 @@ inputComponentChangedCallback = function(target){
 
     var options=[];
     if (type_of_selected != 'value'){
-      var variable_options = getTypeInputArgs(type_of_selected);
-      options.push(emptyOptionTag());
+        var variable_options = getTypeInputArgs(type_of_selected);
+        options.push(emptyOptionTag());
     } else{
-      var variable_options = ['v'];
+        var variable_options = ['v'];
     }
 
     var variable_selector = $(target).siblings('select')[0];
@@ -470,8 +492,14 @@ inputComponentChangedCallback = function(target){
 }
 
 saveGeneratorButtonCallback = function(){
-    alert('you pressed save');
-    var json_representation = harvestComponents();
+    try {
+        var json_representation = harvestComponents();
+    } catch(err){
+        hideComponentModal();
+        showAlert("Whoops: ", "Something went wrong :(", BOOTSTRAP_DANGER_ALERT);
+        return;
+    }
+
     var ajax_settings = {
         dataType: "json",
         contentType: 'application/json',
@@ -483,6 +511,7 @@ saveGeneratorButtonCallback = function(){
     };
 
     $.ajax(ajax_settings);
+    hideComponentModal();
 }
 
 ajaxDidSucceedCallback = function(data){

@@ -30,7 +30,7 @@ class GeneratorsController < ApplicationController
   # POST /generators.json
   def create
     components = handle_components
-
+    #require 'debugger'; debugger
     respond_to do |format|
       if  TerrainLib::Component.hashIsValid?(params[:data]) && @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
