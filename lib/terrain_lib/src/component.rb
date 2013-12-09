@@ -120,7 +120,7 @@ module TerrainLib
     end
     
     def generate()
-      filename = "app/assets/terrains/" + Time.new.getutc.to_s + ".obj"
+      filename = "lib/terrain_lib/out" + Time.new.getutc.to_s + ".obj"
       File.open(filename, mode="w"){ |file|
         # TO WRITE: file.write(str)
         # NOTE: does not append \n
