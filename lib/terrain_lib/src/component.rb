@@ -1,5 +1,6 @@
 require 'perlin'
 
+# Defines the scale with which the obj files should be rendered. Default set to 1/10th size
 OBJ_SCALAR = 0.1
 
 #types...
