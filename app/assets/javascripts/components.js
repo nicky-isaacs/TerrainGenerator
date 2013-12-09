@@ -41,7 +41,7 @@ harvestComponents = function(){
     if ( checkDataIntegrity(clean_params) ){
         return clean_params;
     } else{
-        showAlert("Whoops!", "Looks like you are missing some required inputs", BOOTSTRAP_DANGER_ALERT);
+        return -1;
     }
 }
 
@@ -64,11 +64,11 @@ checkDataIntegrity = function(json){
 
     if (!has_everything){ return has_everything; }
 
-    $(Object.keys(json)).each(function(index, key){
-        var type = json[key].type;
+    $(Object.keys(json)).each(function(index, name){
+        var type = json[name].type;
 
-        if ( isResult(type) && isResult(key) ){
-            console.log("Type: " + type + " Key: " + key);
+        if ( isResult(type) && (name != type) ){
+            console.log("Type: " + type + " Key: " + name);
             has_everything = false;
             showAlert("Error: ", "Your result component must be named \'result\'. It's dumb, I know, sorry.", BOOTSTRAP_DANGER_ALERT);
             return false;
@@ -495,23 +495,26 @@ saveGeneratorButtonCallback = function(){
     try {
         var json_representation = harvestComponents();
     } catch(err){
-        hideComponentModal();
         showAlert("Whoops: ", "Something went wrong :(", BOOTSTRAP_DANGER_ALERT);
         return;
     }
 
-    var ajax_settings = {
-        dataType: "json",
-        contentType: 'application/json',
-        url: '/generators.json',
-        type: 'POST',
-        data:  JSON.stringify({ data: json_representation}),
-        success: function(){ ajaxDidSucceedCallback(this) },
-        error: function(){ ajaxDidFailCallback(this) }
-    };
+    if (json_representation != -1){
+        var ajax_settings = {
+            dataType: "json",
+            contentType: 'application/json',
+            url: '/generators.json',
+            type: 'POST',
+            data:  JSON.stringify({ data: json_representation}),
+            success: function(){ ajaxDidSucceedCallback(this) },
+            error: function(){ ajaxDidFailCallback(this) }
+        };
 
-    $.ajax(ajax_settings);
-    hideComponentModal();
+        $.ajax(ajax_settings);
+        hideComponentModal();
+    } else{
+        hideComponentModal();
+    }
 }
 
 ajaxDidSucceedCallback = function(data){

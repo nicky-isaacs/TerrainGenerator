@@ -29,6 +29,7 @@ class GeneratorsController < ApplicationController
   # POST /generators
   # POST /generators.json
   def create
+    require 'debugger'; debugger
     components = handle_components
     #require 'debugger'; debugger
     respond_to do |format|
