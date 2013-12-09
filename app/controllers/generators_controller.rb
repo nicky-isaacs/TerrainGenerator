@@ -8,13 +8,14 @@ class GeneratorsController < ApplicationController
   # GET /generators
   # GET /generators.json
   def index
-    @generators = Generator.all
+    @generators = Generator.all.select{ |g| g.is_default? || g.user_id == current_user.id }
   end
 
   # GET /generators/1
   # GET /generators/1.json
   def show
-  end
+  	@generator = Generator.where(id: id)
+	end
 
   # GET /generators/new
   def new
@@ -31,7 +32,7 @@ class GeneratorsController < ApplicationController
     components = handle_components
 
     respond_to do |format|
-      if  TerrainLib::Component.hashIsValid?(@generator.generator_hash) && @generator.save
+      if  TerrainLib::Component.hashIsValid?(params[:data]) && @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
         format.json { render action: 'show', status: :created, location: @generator }
       else
@@ -85,8 +86,8 @@ class GeneratorsController < ApplicationController
 
   # { type: 'mult',  }
   def handle_components
-    gen_hash = params[:data].to_s
-    @generator = Generator.new({ generator_hash: gen_hash, user_id: current_user.user_id })
+		gen_hash = params[:data].to_s
+    @generator = Generator.new({ generator_hash: gen_hash })
   end
 
   # Use callbacks to share common setup or constraints between actions.

@@ -21,6 +21,10 @@ class Generator < ActiveRecord::Base
     save!
   end
 
+	def is_default?
+		'y' == self.default
+	end
+
   private
 
   def deserialize
