@@ -1,5 +1,7 @@
 require 'perlin'
 
+OBJ_SCALAR = 0.1
+
 #types...
 #  value: outputs constant value by name "v"
 #  mult: inputs{"x", "y", "z", "w", "b"} => outputs{"x", "y", "z", "w"}
@@ -126,7 +128,7 @@ module TerrainLib
             # get the value at this position
             hgt = self.sample({"x" => x, "y" => y})["z"]
             self.reset()
-            file.write("v #{x.to_s} #{hgt.to_s} #{y.to_s}\n")
+            file.write("v #{(x * OBJ_SCALAR).to_s} #{(hgt * OBJ_SCALAR).to_s} #{(y * OBJ_SCALAR).to_s}\n")
           end
         end
         for x in 1..200
@@ -375,6 +377,22 @@ module TerrainLib
         @outputs["y"] = [y, b].max
         @outputs["z"] = [z, c].max
         @outputs["w"] = [w, d].max
+        return @outputs
+    end
+    
+    def abs()
+        x = invalue("x")
+        y = invalue("y")
+        z = invalue("z")
+        w = invalue("w")
+        if x.nan? then x = 0 end
+        if y.nan? then y = 0 end
+        if z.nan? then z = 0 end
+        if w.nan? then w = 0 end
+        @outputs["x"] = x.abs
+        @outputs["y"] = y.abs
+        @outputs["z"] = z.abs
+        @outputs["w"] = w.abs
         return @outputs
     end
     

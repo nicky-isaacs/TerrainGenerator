@@ -29,6 +29,7 @@ module TerrainLib
             'resize' => [%w(x y z w m), %w(x y z w m)],
             'min' => [%w(x y z w a b c d), %w(x y z w)],
             'max' => [%w(x y z w a b c d), %w(x y z w)],
+            'abs' => [%w(x y z w), %w(x y z w)],
             'cmp' => [%w(df x y z w a b c d), %w(x y z w)]
         }
       end
