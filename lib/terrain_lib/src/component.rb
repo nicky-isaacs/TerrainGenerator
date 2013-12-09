@@ -96,7 +96,8 @@ module TerrainLib
     end
     
     def self.hashIsValid?(hash)
-      (hash.has_key?("result") && hash["result"].has_key("type") && hash["result"]["type"] == "result") ? true : false
+      keys = hash.keys
+      (keys.include?("result") && hash["result"].keys.include?("type") && hash["result"]["type"] == "result") ? true : false
     end
 
     def sample(coord)
@@ -241,9 +242,9 @@ module TerrainLib
         y = invalue("y")
         z = invalue("z")
         puts("(#{x}, #{y}, #{z})\n")
-        if x.to_s == "NaN" x = 98.1222 end
-        if y.to_s == "NaN" then y = 2877.211 end
-        if z.to_s == "NaN" then z = 12383.122 end
+        x = 98.1222 if x.to_s == "NaN"
+        y = 2877.211 if y.to_s == "NaN"
+        z = 12383.122 if z.to_s == "NaN"
         @outputs["v"] = p[x, y, z]
         return @outputs
     end
@@ -257,9 +258,9 @@ module TerrainLib
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
-        if x.to_s == "NaN" then x = 98.1222 end
-        if y.to_s == "NaN" then y = 2877.211 end
-        if z.to_s == "NaN" then z = 12383.122 end
+        x = 98.1222 if x.to_s == "NaN"
+        y = 2877.211 if y.to_s == "NaN"
+        z = 12383.122 if z.to_s == "NaN"
         @outputs["v"] = s[x, y, z]
         return @outputs
     end
