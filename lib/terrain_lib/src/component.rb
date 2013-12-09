@@ -2,7 +2,7 @@ require 'fileutils'
 require 'perlin'
 
 # Defines the scale with which the obj files should be rendered. Default set to 1/10th size
-OBJ_SCALAR = 0.1
+OBJ_SCALAR = 0.05
 
 #types...
 #  value: outputs constant value by name "v"
@@ -123,7 +123,7 @@ module TerrainLib
     def generate()
 			out_path = File.join( File.expand_path( File.dirname(__FILE__) ), '..', 'out' )
 			FileUtils.mkdir_p(out_path) unless File.exists? out_path
-      file = Time.new.getutc.to_s + ".obj"
+      file = (Time.new.getutc.to_s).gsub(/[^0-9]/, '') + ".obj"
       fullpath = File.join out_path, file
 			File.open(fullpath, mode="w"){ |file|
         # TO WRITE: file.write(str)
