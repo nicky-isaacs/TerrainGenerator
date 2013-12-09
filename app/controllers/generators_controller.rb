@@ -69,7 +69,7 @@ class GeneratorsController < ApplicationController
 
   # =Renders the preview partial
   def preview
-    if (Rails.env.development? || is_admin?) && params[:id].nil?
+    if (Rails.env.development? || is_admin?) && (params[:id].nil? || params[:show_test_object])
       @obj_path = "/test/test.obj"
       flash[:alert] = "Displaying the test object"
     elsif !@obj_path
