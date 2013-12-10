@@ -123,6 +123,7 @@ module TerrainLib
       File.open(filename, mode="w"){ |file|
         # TO WRITE: file.write(str)
         # NOTE: does not append \n
+        file.write("o terrain\n")
         for x in 0..200
           for y in 0..200
             # get the value at this position
