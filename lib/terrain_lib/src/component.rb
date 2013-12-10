@@ -109,7 +109,8 @@ module TerrainLib
     def self.isValidComponent?(k, v, hash)
         if v.class.name != "Hash" then return [false, "component #{k} is not a hash!"] end
         if not v.has_key?("type") then return [false, "component #{k} has no type!"] end
-        if v["type"].class.name != "String" then return [false, "component #{k}'s type field is not a string!"] end
+        if v["type"].class.name != "String" then return [false, "component #{k}'s type field must be a string!"] end
+        if not TerrainLib::ComponentTypesLookup::lookup_table.has_key?(v["type"]) then return [false, "component #{k} has an invalid type!"] end
         if v.has_key?("outputs") then
             out = v["outputs"]
             if out.class.name != "Hash" then return[false, "component #{k}'s outputs are not a hash!"] end
@@ -123,12 +124,12 @@ module TerrainLib
             if inp.class.name != "Hash" then return [false, "component #{k}'s inputs are not a hash!"] end
             inp.each do |l,w|
                 if l.class.name != "String" then return [false, "component #{k}'s inputs include non-string keys!"] end
-                if w.class.name != "Array" then return [false, "component #{k}'s input #{l} is not an array!"] end
+                if w.class.name != "Array" then return [false, "component #{k}'s input #{l} must be an array!"] end
                 if w.first != "sampler" then
                     if w.first.class.name != "String" or not hash.has_key?(w.first) then return [false, "component #{k}'s input #{l}'s first element must be the name of another component!"] end
                     s,m = self.isValidComponent?(w.first, hash[w.first], hash)
                     if not s then return [false, m] end
-                    if w[-1].class.name != "String" then return [false, "component #{k}'s input #{l}'s last element must be the name of an output of another component!"] end
+                    if w[-1].class.name != "String" or ((not hash[w.first].has_key?("outputs") or hash[w.first]["outputs"].class.name != "Hash" or not hash[w.first]["outputs"].has_key?(w[-1])) and (not TerrainLib::ComponentTypesLookup::lookup_table[hash[w.first]["type"]][-1].include?(w[-1]))) then return [false, "component #{k}'s input #{l}'s last element must be the name of an output of another component!"] end
                 end
             end
         end
