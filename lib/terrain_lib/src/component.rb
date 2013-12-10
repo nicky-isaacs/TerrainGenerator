@@ -142,7 +142,8 @@ module TerrainLib
             row = nrow - 201
             curr = row + y
             ncurr = nrow + y
-            file.write("f #{ncurr.to_s} #{(ncurr + 1).to_s} #{(curr + 1).to_s} #{curr.to_s}\n")
+            file.write("f #{ncurr.to_s} #{(ncurr + 1).to_s} #{(curr + 1).to_s}\n")
+            file.write("f #{curr.to_s} #{ncurr.to_s} #{(curr + 1).to_s}\n")
           end
         end
       }
