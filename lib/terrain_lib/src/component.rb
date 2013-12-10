@@ -1,8 +1,6 @@
-require 'fileutils'
 require 'perlin'
 
-# Defines the scale with which the obj files should be rendered. Default set to 1/10th size
-OBJ_SCALAR = 0.05
+OBJ_SCALAR = 0.1
 
 #types...
 #  value: outputs constant value by name "v"
@@ -100,7 +98,41 @@ module TerrainLib
     end
     
     def self.isValidHash?(hash)
-        (hash.keys.include?("result") and hash["result"].keys.include?("type") and hash["result"]["type"] == "result") ? true : false
+        unless hash.class.name == "Hash" and hash.has_key?("result") and hash["result"].has_key?("type") and hash["result"]["type"] == "result" then return [false, "hash has no valid result component", 0] end
+        hash.each do |k,v|
+            a,b = self.isValidComponent?(k, v, hash)
+            if not a then return [false, b] end
+        end
+        return [true, nil]
+    end
+    
+    def self.isValidComponent?(k, v, hash)
+        if v.class.name != "Hash" then return [false, "component #{k} is not a hash!"] end
+        if not v.has_key?("type") then return [false, "component #{k} has no type!"] end
+        if v["type"].class.name != "String" then return [false, "component #{k}'s type field is not a string!"] end
+        if v.has_key?("outputs") then
+            out = v["outputs"]
+            if out.class.name != "Hash" then return[false, "component #{k}'s outputs are not a hash!"] end
+            out.each do |l,w|
+                if l.class.name != "String" then return [false, "component #{k}'s outputs include non-string keys!"] end
+                if not w.respond_to?(:to_f) then return [false, "component #{k}'s outputs include non-convertible-to-float values"] end
+            end
+        end
+        if v.has_key?("inputs") then
+            inp = v["inputs"]
+            if inp.class.name != "Hash" then return [false, "component #{k}'s inputs are not a hash!"] end
+            inp.each do |l,w|
+                if l.class.name != "String" then return [false, "component #{k}'s inputs include non-string keys!"] end
+                if w.class.name != "Array" then return [false, "component #{k}'s input #{l} is not an array!"] end
+                if w.first != "sampler" then
+                    if w.first.class.name != "String" or not hash.has_key?(w.first) then return [false, "component #{k}'s input #{l}'s first element must be the name of another component!"] end
+                    s,m = self.isValidComponent?(w.first, hash[w.first], hash)
+                    if not s then return [false, m] end
+                    if w[-1].class.name != "String" then return [false, "component #{k}'s input #{l}'s last element must be the name of an output of another component!"] end
+                end
+            end
+        end
+        return [true, nil]
     end
 
     def sample(coord)
@@ -120,11 +152,8 @@ module TerrainLib
     end
     
     def generate()
-			out_path = File.join( File.expand_path( File.dirname(__FILE__) ), '..', 'out' )
-			FileUtils.mkdir_p(out_path) unless File.exists? out_path
-      file = (Time.new.getutc.to_s).gsub(/[^0-9]/, '') + ".obj"
-      fullpath = File.join out_path, file
-			File.open(fullpath, mode="w"){ |file|
+      filename = "lib/terrain_lib/out/" + Time.new.getutc.to_s + ".obj"
+      File.open(filename, mode="w"){ |file|
         # TO WRITE: file.write(str)
         # NOTE: does not append \n
         file.write("o terrain\n")
@@ -147,11 +176,12 @@ module TerrainLib
           end
         end
       }
-      return fullpath
+      return filename
     end
 
     def output()
-      @outputs.keys.size > 0 ? @outputs : self.send(@type)
+      if @outputs.keys.size > 0 then return @outputs end
+      return self.send(@type)
     end
 
     def invalue(name)
