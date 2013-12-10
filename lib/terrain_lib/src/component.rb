@@ -98,7 +98,7 @@ module TerrainLib
     end
     
     def self.isValidHash?(hash)
-        if first then unless hash.class.name == "Hash" and hash.has_key?("result") and hash["result"].has_key("type") and hash["result"]["type"] == "result" then return [false, "hash has no valid result component"] end first = false end
+        unless hash.class.name == "Hash" and hash.has_key?("result") and hash["result"].has_key?("type") and hash["result"]["type"] == "result" then return [false, "hash has no valid result component", 0] end
         hash.each do |k,v|
             a,b = self.isValidComponent?(k, v, hash)
             if not a then return [false, b] end
@@ -107,29 +107,32 @@ module TerrainLib
     end
     
     def self.isValidComponent?(k, v, hash)
-        if v.class.name != "Hash" then return [false, "component #{v} is not a hash!"] end
-        if not v.has_key?("type") then return [false, "component #{v} has no type!"] end
-        if v["type"].class.name != "String" then return [false, "component #{v}'s type is not a string!"] end
+        if v.class.name != "Hash" then return [false, "component #{k} is not a hash!"] end
+        if not v.has_key?("type") then return [false, "component #{k} has no type!"] end
+        if v["type"].class.name != "String" then return [false, "component #{k}'s type field is not a string!"] end
         if v.has_key?("outputs") then
             out = v["outputs"]
-            if out.class.name != "Hash" then return[false, "component #{v}'s outputs are not a hash!"] end
+            if out.class.name != "Hash" then return[false, "component #{k}'s outputs are not a hash!"] end
             out.each do |l,w|
-                if l.class.name != "String" then return [false, "component #{v}'s outputs include non-string keys!"] end
-                if not w.responds_to?(:to_f) then return [false, "component #{v}'s outputs include non-convertible-to-float values"] end
+                if l.class.name != "String" then return [false, "component #{k}'s outputs include non-string keys!"] end
+                if not w.respond_to?(:to_f) then return [false, "component #{k}'s outputs include non-convertible-to-float values"] end
             end
         end
         if v.has_key?("inputs") then
             inp = v["inputs"]
-            if inp.class.name != "Hash" then return [false, "component #{v}'s inputs are not a hash!"] end
+            if inp.class.name != "Hash" then return [false, "component #{k}'s inputs are not a hash!"] end
             inp.each do |l,w|
-                if l.class.name != "String" then return [false, "component #{v}'s inputs include non-string keys!"] end
-                if w.class.name != "Array" then return [false, "component #{v}'s input #{w} is not an array!"] end
-                if w.first.class.name != "String" or not hash.has_key?(w.first) then return [false, "component #{v}'s input #{w}'s first element must be the name of another component!"] end
-                s,m = isValidComponent(w.first, hash[w.first], hash)
-                if not s then return [false, m] end
-                if w[-1].class.name != "String" or hash[w.first].class.name != "Hash" or not hash[w.first]["output"].has_key?(w[-1]) then return [false, "component #{v}'s input #{w}'s last element must be the name of an output of another component!"] end
+                if l.class.name != "String" then return [false, "component #{k}'s inputs include non-string keys!"] end
+                if w.class.name != "Array" then return [false, "component #{k}'s input #{l} is not an array!"] end
+                if w.first != "sampler" then
+                    if w.first.class.name != "String" or not hash.has_key?(w.first) then return [false, "component #{k}'s input #{l}'s first element must be the name of another component!"] end
+                    s,m = self.isValidComponent?(w.first, hash[w.first], hash)
+                    if not s then return [false, m] end
+                    if w[-1].class.name != "String" then return [false, "component #{k}'s input #{l}'s last element must be the name of an output of another component!"] end
+                end
             end
         end
+        return [true, nil]
     end
 
     def sample(coord)
