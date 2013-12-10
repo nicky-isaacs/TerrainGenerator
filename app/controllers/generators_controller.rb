@@ -8,19 +8,19 @@ class GeneratorsController < ApplicationController
   # GET /generators
   # GET /generators.json
   def index
-    @generators = Generator.all.select{ |g| g.is_default? || g.user_id == current_user.id }
+    @generators = Generator.where(user_id: current_user.id) + Generator.where( default: 'y')
   end
 
   # GET /generators/1
   # GET /generators/1.json
   def show
-  	@generator = Generator.where(id: params[:id] )
+  	@generators = Generator.where(id: params[:id], user_id: current_user.id )
 	end
 
-  # GET /generators/new
-  def new
-    @generator = Generator.new
-  end
+  ## GET /generators/new
+  #def new
+  #  @generator = Generator.new
+  #end
 
   # GET /generators/1/edit
   def edit
@@ -29,11 +29,10 @@ class GeneratorsController < ApplicationController
   # POST /generators
   # POST /generators.json
   def create
-    require 'debugger'; debugger
     components = handle_components
     #require 'debugger'; debugger
     respond_to do |format|
-      if  TerrainLib::Component.hashIsValid?(params[:data]) && @generator.save
+      if  TerrainLib::Component.isValidHash?(params[:data]) && @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
         format.json { render action: 'show', status: :created, location: @generator }
       else
@@ -78,6 +77,14 @@ class GeneratorsController < ApplicationController
     render :layout => false
   end
 
+  # GET /generators/:id/download
+  # GET /generators/:id/download.json
+  def download
+    require 'debugger'; debugger
+    generator = Generator.where(id: params[:id], user_id: current_user.id).first
+    send_file TerrainLib::Component.generate generator.generator_hash
+  end
+
   private
 
   # Debating on whether to put this in component or generator controller
@@ -87,8 +94,9 @@ class GeneratorsController < ApplicationController
 
   # { type: 'mult',  }
   def handle_components
-		gen_hash = params[:data].to_s
-    @generator = Generator.new({ generator_hash: gen_hash })
+    #require 'debugger'; debugger
+		gen_hash = params[:data]
+    @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id })
   end
 
   # Use callbacks to share common setup or constraints between actions.

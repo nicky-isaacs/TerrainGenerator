@@ -13,9 +13,10 @@
   <tbody>
     <% @generators.each do |generator| %>
       <tr>
-        <td><%= generator.name %></td>
+        <td><%= generator.id %></td>
         <td><%= link_to 'Show', generator %></td>
         <td><%= link_to 'Edit', edit_generator_path(generator) %></td>
+        <td><%= link_to 'Download', "/generators/#{generator.id}/download" %></td>
         <td><%= link_to 'Destroy', generator, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

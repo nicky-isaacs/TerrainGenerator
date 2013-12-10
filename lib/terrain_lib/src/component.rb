@@ -100,8 +100,7 @@ module TerrainLib
     end
     
     def self.isValidHash?(hash)
-        if hash.has_key?("result") and hash["result"].has_key("type") and hash["result"]["type"] == "result" then return true
-        else return false end
+        (hash.keys.include?("result") and hash["result"].keys.include?("type") and hash["result"]["type"] == "result") ? true : false
     end
 
     def sample(coord)
@@ -152,8 +151,7 @@ module TerrainLib
     end
 
     def output()
-      if @outputs.keys.size > 0 then return @outputs end
-      return self.send(@type)
+      @outputs.keys.size > 0 ? @outputs : self.send(@type)
     end
 
     def invalue(name)

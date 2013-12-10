@@ -12,6 +12,8 @@ TerainGeneration::Application.routes.draw do
 
   post '/generators' => 'generators#create'
 
+  get '/generators/:id/download' => 'generators#download'
+
   resources :generators
 
 	# The priority is based upon order of creation: first created -> highest priority.

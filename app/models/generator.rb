@@ -5,7 +5,10 @@ class Generator < ActiveRecord::Base
 
 	self.table_name = "generators"
 
-  attr_accessible :generator_hash
+  before_save :serialize
+  after_find :deserialize
+
+  attr_accessible :generator_hash, :user_id
   belongs_to :user
 
   def obj_file
@@ -28,10 +31,18 @@ class Generator < ActiveRecord::Base
   private
 
   def deserialize
-    root = TerrainLib::Component.deserialize root
+    begin
+      generator_hash = JSON.parse generator_hash
+    rescue
+
+    end
   end
 
   def serialize
-    root = root.to_json
+    begin
+      generator_hash = generator_hash.to_json
+    rescue
+
+    end
   end
 end

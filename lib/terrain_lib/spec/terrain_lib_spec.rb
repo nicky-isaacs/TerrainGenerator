@@ -27,8 +27,10 @@ describe TerrainLib::Component do
         filepath = result.generate()
         File::delete(filepath)
     end
+
     it "should properly generate a heightmap given user info" do
         metadata = JSON.parse(File.open("lib/terrain_lib/spec/test.gen").read)
+        expect(TerrainLib::Component.isValidHash? metadata).to be_true
         filepath = TerrainLib::Component::generate(metadata)
     end
 end
