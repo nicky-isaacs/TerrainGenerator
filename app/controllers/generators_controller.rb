@@ -78,7 +78,6 @@ class GeneratorsController < ApplicationController
   # GET /generators/:id/download
   # GET /generators/:id/download.json
   def download
-    require 'debugger'; debugger
     generator = Generator.where(id: params[:id], user_id: current_user.id).first
     send_file TerrainLib::Component.generate generator.generator_hash
   end
