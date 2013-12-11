@@ -147,7 +147,7 @@ module TerrainLib
     def reset()
         if @type != "value" then @outputs = nil end
         @inputs.each do |k,v|
-            if v.first != "sampler" then
+            if v.first != "sampler" and not v.first.nil? then
                 v.first.reset()
             end
         end
@@ -163,8 +163,8 @@ module TerrainLib
           for y in 0..200
             # get the value at this position
             hgt = self.sample({"x" => x, "y" => y})["z"]
-            self.reset()
             file.write("v #{(x * OBJ_SCALAR).to_s} #{(hgt * OBJ_SCALAR).to_s} #{(y * OBJ_SCALAR).to_s}\n")
+            self.reset()
           end
         end
         for x in 1..200
