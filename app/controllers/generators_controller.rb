@@ -35,7 +35,7 @@ class GeneratorsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @generator }
       else
         format.html { render action: 'new' }
-        format.json { render json: @generator.errors, status: :unprocessable_entity, errors: 'Could Not Create Generator' }
+        format.json { render json: {status: :unprocessable_entity, errors: 'Could Not Create Generator'} }
       end
     end
   end
