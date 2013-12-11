@@ -57,7 +57,6 @@ module TerrainLib
   
     def initialize( params={} )
       @outputs = params[:outputs]
-      if @outputs == nil then @outputs = {} end
       @inputs = params[:inputs]
       if @inputs == nil then @inputs = {} end
       @type = params[:type]
@@ -146,7 +145,7 @@ module TerrainLib
     end
     
     def reset()
-        if @type != "value" then @outputs = {} end
+        if @type != "value" then @outputs = nil end
         @inputs.each do |k,v|
             if v.first != "sampler" then
                 v.first.reset()
@@ -183,7 +182,7 @@ module TerrainLib
     end
 
     def output()
-      if @outputs.keys.size > 0 then return @outputs end
+      if not @outputs.nil? then return @outputs end
       return self.send(@type)
     end
 
@@ -199,15 +198,18 @@ module TerrainLib
     end
     
     def result()
+      @outputs = {}
       @outputs["z"] = invalue("v")
       return @outputs
     end
 
     def value()
+      @outputs = {}
       return @outputs
     end
 
     def mult()
+      @outputs = {}
       @outputs["x"] = invalue("x") * invalue("b")
       @outputs["y"] = invalue("y") * invalue("b")
       @outputs["z"] = invalue("z") * invalue("b")
@@ -216,6 +218,7 @@ module TerrainLib
     end
 
     def div()
+      @outputs = {}
       @outputs["x"] = invalue("x") / invalue("b")
       @outputs["y"] = invalue("y") / invalue("b")
       @outputs["z"] = invalue("z") / invalue("b")
@@ -224,6 +227,7 @@ module TerrainLib
     end
 
     def add()
+      @outputs = {}
       @outputs["x"] = invalue("x") + invalue("a")
       @outputs["y"] = invalue("y") + invalue("b")
       @outputs["z"] = invalue("z") + invalue("c")
@@ -232,6 +236,7 @@ module TerrainLib
     end
 
     def sub()
+      @outputs = {}
       @outputs["x"] = invalue("x") - invalue("a")
       @outputs["y"] = invalue("y") - invalue("b")
       @outputs["z"] = invalue("z") - invalue("c")
@@ -240,6 +245,7 @@ module TerrainLib
     end
 
     def exp()
+      @outputs = {}
       e = invalue("e")
       @outputs["x"] = invalue("x") ** e
       @outputs["y"] = invalue("y") ** e
@@ -249,6 +255,7 @@ module TerrainLib
     end
 
     def sqrt()
+      @outputs = {}
       x = invalue("x")
       y = invalue("y")
       z = invalue("z")
@@ -261,6 +268,7 @@ module TerrainLib
     end
 
     def log()
+      @outputs = {}
       b = invalue("b")
       @outputs["x"] = Math.log(invalue("x"), b)
       @outputs["y"] = Math.log(invalue("y"), b)
@@ -270,6 +278,7 @@ module TerrainLib
     end
 
     def random()
+      @outputs = {}
       r = Random.new(invalue("sd"))
       lo = invalue("lo")
       hi = invalue("hi")
@@ -281,6 +290,7 @@ module TerrainLib
     end
 
     def perlin()
+        @outputs = {}
         sd = invalue("sd")
         if sd.nan? then sd = 0 end
         sd = sd.abs
@@ -297,6 +307,7 @@ module TerrainLib
     end
 
     def simplex()
+        @outputs = {}
         sd = invalue("sd")
         if sd.nan? then sd = 0 end
         sd = sd.abs
@@ -313,6 +324,7 @@ module TerrainLib
     end
 
     def mag()
+      @outputs = {}
       x = invalue("x")
       if x.nan? then x = 0 end
       y = invalue("y")
@@ -329,6 +341,7 @@ module TerrainLib
     end
 
     def norm()
+      @outputs = {}
       x = invalue("x")
       if x.nan? then x = 0 end
       y = invalue("y")
@@ -349,6 +362,7 @@ module TerrainLib
     end
 
     def resize()
+      @outputs = {}
       x = invalue("x")
       if x.nan? then x = 0 end
       y = invalue("y")
@@ -371,6 +385,7 @@ module TerrainLib
     end
     
     def min()
+        @outputs = {}
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
@@ -395,6 +410,7 @@ module TerrainLib
     end
     
     def max()
+        @outputs = {}
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
@@ -419,6 +435,7 @@ module TerrainLib
     end
     
     def abs()
+        @outputs = {}
         x = invalue("x")
         y = invalue("y")
         z = invalue("z")
@@ -435,6 +452,7 @@ module TerrainLib
     end
     
     def cmp()
+        @outputs = {}
         if invalue("d") < 0 then
             @outputs["x"] = invalue("a")
             @outputs["y"] = invalue("b")
