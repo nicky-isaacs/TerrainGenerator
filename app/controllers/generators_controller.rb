@@ -79,7 +79,7 @@ class GeneratorsController < ApplicationController
   # GET /generators/:id/download.json
   def download
     generator = Generator.where(id: params[:id], user_id: current_user.id).first
-    send_file TerrainLib::Component.generate generator.generator_hash
+    send_file TerrainLib::Component.generate JSON.parse(generator.generator_hash)
   end
 
   private
