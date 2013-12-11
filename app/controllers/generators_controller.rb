@@ -100,6 +100,8 @@ class GeneratorsController < ApplicationController
       rescue
         nil
       end
+    else
+      nil
     end
     @generator
   end

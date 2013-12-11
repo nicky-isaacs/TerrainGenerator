@@ -110,7 +110,7 @@ checkDataIntegrity = function(json){
 convertToComponentsJSON = function(divs){
     var data = {};
 
-    $(divs).each(function(index){
+    $(divs).each(function(index, this_div){
         console.log("working on collecting data from: " + this);
         var fieldsets = $(this).children('fieldset');
         var type_fieldset = fieldsets[0];
@@ -126,7 +126,7 @@ convertToComponentsJSON = function(divs){
             }
         } else{
             inputs = {};
-            outputs[name] = 'v';
+            outputs['v'] = this_div.find('.input_field_wrapper').find('input')[0].val;
         }
         var container = {};
         container['inputs'] = inputs;
