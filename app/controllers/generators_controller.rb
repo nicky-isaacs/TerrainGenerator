@@ -93,7 +93,15 @@ class GeneratorsController < ApplicationController
   def handle_component
     #require 'debugger'; debugger
 		gen_hash = params[:data]
-    TerrainLib::Component.isValidHash?(gen_hash) ? @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id }) : nil
+    if TerrainLib::Component.isValidHash?(gen_hash)
+      begin
+        TerrainLib::Component.generate gen_hash
+        @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id })
+      rescue
+        nil
+      end
+    end
+    @generator
   end
 
   # Use callbacks to share common setup or constraints between actions.
