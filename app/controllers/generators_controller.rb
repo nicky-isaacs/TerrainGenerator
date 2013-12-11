@@ -29,10 +29,8 @@ class GeneratorsController < ApplicationController
   # POST /generators
   # POST /generators.json
   def create
-    components = handle_components
-    #require 'debugger'; debugger
     respond_to do |format|
-      if  TerrainLib::Component.isValidHash?(params[:data]) && @generator.save
+      if save_component && @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
         format.json { render action: 'show', status: :created, location: @generator }
       else
@@ -93,10 +91,10 @@ class GeneratorsController < ApplicationController
   # [{:id, :inputs = { input_variable: { output_object_id: 1, output_variable: test }, }, :outputs, :type}, {}, {}]
 
   # { type: 'mult',  }
-  def handle_components
+  def save_component
     #require 'debugger'; debugger
 		gen_hash = params[:data]
-    @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id })
+    TerrainLib::Component.isValidHash?(JSON.parse gen_hash) ? @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id }) : nil
   end
 
   # Use callbacks to share common setup or constraints between actions.

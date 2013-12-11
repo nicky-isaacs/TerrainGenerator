@@ -25,6 +25,12 @@ var colon_separator_class = 'colon_separator';
 var component_field_wrapper_class = "component_field_wrapper";
 var component_name_input_class = 'component_name';
 
+/*
+new requirement:
+    - result component inputs should be name of other components
+    - the 'b' inputs should have valid component names and variables
+ */
+
 var requiredComponentTypes = [
     'result'
 ]
@@ -188,7 +194,8 @@ createFieldBasedOnType = function(type){
 
 
     var input_field_tags=[];
-    if (type != 'value'){// Block will attach selector for components and variables
+//    && !isResult(type)
+    if (!isValue(type) ){// Block will attach selector for components and variables
         $(input_field_names).each(function(index){
             var wrapper = $('<div class=\"input_field_wrapper\ form-group"></div>'); // add wrapper class
 
@@ -213,8 +220,36 @@ createFieldBasedOnType = function(type){
             wrapper.append(component_variable_select_tag);
             input_field_tags.push(wrapper);
         });
-    } else{
-        var wrapper = $('<div class=\"input_field_wrapper\ form-group"></div>'); // add wrapper class
+    }
+//    else if ( isResult(type) ){
+//        var wrapper = $('<div></div>');
+//        wrapper.addClass("input_field_wrapper");
+//        wrapper.addClass("form-group");
+//        var value_label_tag = $('<label for=\"Output value\">Output Value</label>');
+//        var value_input_tag = $('<input></input>');
+//
+//        var select_tag = $('<select></select>');
+//        select_tag.addClass(component_select_class);
+//
+//        var options=[];
+//        $(existingComponentNames()).each(function(index, value){
+//            var opt_tag = $('<option></option>');
+//            opt_tag.html(value);
+//            options.push(opt_tag);
+//            console.log("Added to result select: " + value);
+//        });
+//
+//        var select_tag_with_options = appendToSelect(select_tag, options);
+//        wrapper.append(value_label_tag);
+//        wrapper.append(value_input_tag);
+//        wrapper.append($('<br>'));
+//        wrapper.append(select_tag_with_options);
+//        input_field_tags.push(wrapper);
+//    }
+    else{
+        var wrapper = $('<div></div>');
+        wrapper.addClass("input_field_wrapper");
+        wrapper.addClass("form-group");
         var value_label_tag = $('<label for=\"Output value\">Output Value</label>');
         var value_input_tag = $('<input></input>');
 
