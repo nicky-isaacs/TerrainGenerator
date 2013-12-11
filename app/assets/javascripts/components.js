@@ -126,7 +126,7 @@ convertToComponentsJSON = function(divs){
             }
         } else{
             inputs = {};
-            outputs['v'] = $(this_div).find('.input_field_wrapper').find('input')[0].val;
+            outputs['v'] = $(this_div).find('.input_field_wrapper').find('input')[0].val();
         }
         var container = {};
         container['inputs'] = inputs;
