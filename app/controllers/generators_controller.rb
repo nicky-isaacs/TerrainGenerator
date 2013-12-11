@@ -30,7 +30,7 @@ class GeneratorsController < ApplicationController
   # POST /generators.json
   def create
     respond_to do |format|
-      if save_component && @generator.save
+      if handle_component && @generator.save
         format.html { redirect_to @generator, notice: 'Generator was successfully created.' }
         format.json { render action: 'show', status: :created, location: @generator }
       else
@@ -90,7 +90,7 @@ class GeneratorsController < ApplicationController
   # [{:id, :inputs = { input_variable: { output_object_id: 1, output_variable: test }, }, :outputs, :type}, {}, {}]
 
   # { type: 'mult',  }
-  def save_component
+  def handle_component
     #require 'debugger'; debugger
 		gen_hash = params[:data]
     TerrainLib::Component.isValidHash?(JSON.parse gen_hash) ? @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id }) : nil
