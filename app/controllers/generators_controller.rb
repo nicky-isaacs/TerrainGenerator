@@ -95,10 +95,14 @@ class GeneratorsController < ApplicationController
 		gen_hash = params[:data]
     if TerrainLib::Component.isValidHash?(gen_hash)
       begin
+        puts "\n\n\nCalling Generate\n\n\n"
         TerrainLib::Component.generate gen_hash
+        puts "\n\n\nSuccessfully called generate\n\n\n"
         @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id })
-      rescue
-        nil
+      rescue => e
+        Rails.logger.debug "THERE WAS AN ERROR!: #{e.message}\n\n#{e.inspect}"
+        raise e
+        @generator = nil
       end
     else
       nil

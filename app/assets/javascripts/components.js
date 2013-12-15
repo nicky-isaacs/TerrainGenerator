@@ -84,28 +84,6 @@ checkDataIntegrity = function(json){
     return has_everything;
 }
 
-// Helper to turn HTML into json obj in format:
-// {
-//  name_str: {
-//      type: 'type_str',
-//      inputs: {
-//          variable_str: [source_name_str, output_name_str] },
-//      }
-//      outputs: {
-//          name_str: variable_str
-//      }
-//  },
-//  name_str: {
-//      type: 'type_str',
-//      inputs: {
-//          name_str: variable_str
-//      },
-//      outputs: {
-//          name_str: variable_str
-//      }
-//  }
-// }
-
 // Helper to parse divs for data
 convertToComponentsJSON = function(divs){
     var data = {};
@@ -195,7 +173,7 @@ createFieldBasedOnType = function(type){
 
     var input_field_tags=[];
 //    && !isResult(type)
-    if (!isValue(type) ){// Block will attach selector for components and variables
+    if ( !isValue(type) ){// Block will attach selector for components and variables
         $(input_field_names).each(function(index){
             var wrapper = $('<div class=\"input_field_wrapper\ form-group"></div>'); // add wrapper class
 
@@ -203,7 +181,8 @@ createFieldBasedOnType = function(type){
             var src_component_select = $(component_select_str)[0];
 
             var src_component_select_label = $('<label for=\"' + this +  '\">' + this + '</label>');
-            var src_component_select_with_options = appendToSelect(src_component_select, input_field_options);
+            //var src_component_select_with_options = appendToSelect(src_component_select, input_field_options);
+            var src_component_select_with_options = src_component_select;
 
             $(src_component_select_with_options).click(function(){ inputComponentCallback($(this)) });
             $(src_component_select_with_options).change(function(){ inputComponentChangedCallback(this) });
@@ -266,13 +245,10 @@ createFieldBasedOnType = function(type){
     $(fieldset_tag).append($('<br>'));
     $(fieldset_tag).append($('<br>'));
     $(input_field_tags).each(function(index){
-        // console.log("appending to fieldset: " + $(this));
         $(fieldset_tag).append(this);
         $(fieldset_tag).append($('<br>'));
     });
 
-
-    //console.log("Fieldset: " + fieldset_tag);
     return fieldset_tag;
 }
 
@@ -341,7 +317,11 @@ getExistingComponentType = function(name){
 
 // Given a type, returns the arguments that it takes
 getTypeInputArgs = function(type){
-    return getComponentInputOutputMap()[type][0];
+    try{
+        return getComponentInputOutputMap()[type][0];
+    } catch(err){
+        console.log("Error getting input types for: " + type);
+    }
 }
 
 // Array of objs with name and type
@@ -507,11 +487,13 @@ inputComponentChangedCallback = function(target){
     var type_of_selected = getExistingComponentType(selected_component);
 
     var options=[];
-    if (type_of_selected != 'value'){
+    if ( !isValue(type_of_selected) && !isResult(type_of_selected) ){
         var variable_options = getTypeInputArgs(type_of_selected);
         options.push(emptyOptionTag());
-    } else{
+    } else if (isValue(type_of_selected)){
         var variable_options = ['v'];
+    } else{
+        var variable_options = ['z'];
     }
 
     var variable_selector = $(target).siblings('select')[0];
