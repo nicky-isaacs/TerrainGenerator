@@ -5,19 +5,19 @@ Youtube video to for product demo (its complicated): http://www.youtube.com/watc
 Things that work
 ================
 
-- [x] Generator creation
-- [x] Generator deletion
-- [x] Sign in
-- [x] List generators
-- [x] Download generators in valid .obj format
+ - [x] Generator creation
+ - [x] Generator deletion
+ - [x] Sign in
+ - [x] List generators
+ - [x] Download generators in valid .obj format
 
 Things that almost work
 =======================
 
-- [ ] Rendering 3D terrain in the browser
-- [ ] Sign up (hopefully will be fixed soon)
+ - [ ] Rendering 3D terrain in the browser
+ - [ ] Sign up (hopefully will be fixed soon)
 
 Things that do not work
 =======================
 
-- [ ] Editing generators after created
+ - [ ] Editing generators after created
