@@ -57,7 +57,7 @@ module TerrainLib
   
     def initialize( params={} )
       @outputs = params[:outputs]
-      if @outputs.empty? then @outputs = nil end
+      @outputs = nil if @outputs.nil? || @outputs.empty?
       @inputs = params[:inputs]
       if @inputs == nil then @inputs = {} end
       @type = params[:type]
