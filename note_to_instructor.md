@@ -4,7 +4,7 @@ Youtube video to for product demo (its complicated): http://www.youtube.com/watc
 
 Things that work
 ================
-
+- [ ] a task list item
  - [x] Generator creation
  - [x] Generator deletion
  - [x] Sign in
