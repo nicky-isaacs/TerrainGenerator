@@ -14,8 +14,8 @@ class GeneratorsController < ApplicationController
   # GET /generators/1
   # GET /generators/1.json
   def show
-  	@generators = Generator.where(id: params[:id], user_id: current_user.id )
-	end
+    @generators = Generator.where(id: params[:id], user_id: current_user.id )
+  end
 
   ## GET /generators/new
   #def new
@@ -57,7 +57,7 @@ class GeneratorsController < ApplicationController
   # DELETE /generators/1
   # DELETE /generators/1.json
   def destroy
-    @generator.destroy
+    Generator.where(id: params[:id] ).first.destroy
     respond_to do |format|
       format.html { redirect_to generators_url }
       format.json { head :no_content }
@@ -78,6 +78,7 @@ class GeneratorsController < ApplicationController
   # GET /generators/:id/download
   # GET /generators/:id/download.json
   def download
+    #require 'debugger'; debugger
     generator = Generator.where(id: params[:id], user_id: current_user.id).first
     send_file TerrainLib::Component.generate JSON.parse(generator.generator_hash)
   end
@@ -91,21 +92,16 @@ class GeneratorsController < ApplicationController
 
   # { type: 'mult',  }
   def handle_component
-    #require 'debugger'; debugger
-		gen_hash = params[:data]
-    if TerrainLib::Component.isValidHash?(gen_hash)
-      begin
-        puts "\n\n\nCalling Generate\n\n\n"
-        TerrainLib::Component.generate gen_hash
-        puts "\n\n\nSuccessfully called generate\n\n\n"
-        @generator = Generator.new({ generator_hash: gen_hash.to_json, user_id: current_user.id })
-      rescue => e
-        Rails.logger.debug "THERE WAS AN ERROR!: #{e.message}\n\n#{e.inspect}"
-        raise e
-        @generator = nil
-      end
-    else
-      nil
+    tst = params[:data].to_hash.dup
+    begin
+      puts "\n\n\nCalling Generate\n\n\n"
+      TerrainLib::Component.generate tst
+      puts "\n\n\nSuccessfully called generate\n\n\n"
+      @generator = Generator.new({ generator_hash: params[:data].to_json, user_id: current_user.id })
+    rescue => e
+      Rails.logger.debug "THERE WAS AN ERROR!: #{e.message}\n\n#{e.inspect}"
+      raise e
+      @generator = nil
     end
     @generator
   end

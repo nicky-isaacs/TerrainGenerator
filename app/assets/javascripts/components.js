@@ -104,7 +104,7 @@ convertToComponentsJSON = function(divs){
             }
         } else{
             inputs = {};
-            outputs['v'] = $(this_div).find('.input_field_wrapper').find('input')[0].value;
+            outputs['v'] = parseFloat($(this_div).find('.input_field_wrapper').find('input')[0].value);
         }
         var container = {};
         container['inputs'] = inputs;
@@ -468,6 +468,7 @@ inputComponentCallback = function(target){
     var selected_value = $(target).val();
     var existing_components = deleteFromArray(existingComponentNames(), this_name);
     existing_components = deleteFromArray(existing_components, selected_value);
+    existing_components.push('sampler');
 
     var default_option_str = '<option value=\"' + selected_value + '\">' + selected_value + '</option>';
     var options = [$(default_option_str)];
@@ -484,16 +485,23 @@ inputComponentCallback = function(target){
 
 inputComponentChangedCallback = function(target){
     var selected_component = $(target).val();
-    var type_of_selected = getExistingComponentType(selected_component);
+
+    if (selected_component != 'sampler'){
+        var type_of_selected = getExistingComponentType(selected_component);
+    } else{
+        var type_of_selected = 'sampler';
+    }
 
     var options=[];
-    if ( !isValue(type_of_selected) && !isResult(type_of_selected) ){
+    if ( !isValue(type_of_selected) && !isResult(type_of_selected) && selected_component != 'sampler'){
         var variable_options = getTypeInputArgs(type_of_selected);
         options.push(emptyOptionTag());
     } else if (isValue(type_of_selected)){
         var variable_options = ['v'];
-    } else{
+    } else if (isResult(type_of_selected)){
         var variable_options = ['z'];
+    } else{
+        variable_options = ['x', 'y'];
     }
 
     var variable_selector = $(target).siblings('select')[0];
