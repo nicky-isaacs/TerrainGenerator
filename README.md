@@ -1,6 +1,7 @@
 URL: http://192.241.228.72:3000
 
 Youtube video to for product demo (its complicated): http://www.youtube.com/watch?v=lVSiwaYaWoY&feature=em-upload_owner
+To get some really cool terrains you could generate (given some progress on UI), clone this repository and run 'rspec lib/terrain_lib/spec/terrain_lib_spec.rb'. To generate a different terrain, copy one of the *.gen files from lib/terrain_lib/spec/gen to lib/terrain_lib/spec/test.gen.
 
 Things that work
 ================
