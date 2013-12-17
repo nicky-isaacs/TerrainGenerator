@@ -29,11 +29,12 @@ describe TerrainLib::Component do
     end
     
     it "should recognize valid and invalid hashes" do
-        TerrainLib::Component::isValidHash?(JSON.parse(File.open("lib/terrain_lib/spec/rectest.gen").read)).should eq([true, nil])
+        TerrainLib::Component::isValidHash?(JSON.parse(File.open("lib/terrain_lib/spec/gen/mountains.gen").read)).should eq([true, nil])
     end
     
     it "should properly generate a heightmap given user info" do
-        metadata = JSON.parse(File.open("lib/terrain_lib/spec/test.gen").read)
+        metadata = JSON.parse(File.open("lib/terrain_lib/spec/gen/hills.gen").read)
+        TerrainLib::Component::isValidHash?(metadata).should eq([true, nil])
         filepath = TerrainLib::Component::generate(metadata)
     end
 end
